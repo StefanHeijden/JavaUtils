@@ -54,23 +54,17 @@ class YAMLReader {
             int targetDepth = lines.size() > counter ? (int) lines.get(counter).indexOf('/') / SPACES_PER_TAB : depth;
             if (savedLines.get(1).contains("jcr:primaryType: hippostd:folder")) {
                 try {
-                    Files.createDirectories(Paths.get(writePath +  "\\" + getCurrentFileName()));
+                    Files.createDirectories(Paths.get(writePath + "\\" + getCurrentFileName()));
                 } catch (IOException e) {
                     System.out.println("Error creating directory at " + writePath + "\n" + e.getMessage());
                 }
+            }
+            if(targetDepth - depth < 1 || savedLines.get(1).contains("jcr:primaryType: hippostd:folder")) {
                 createYAML();
-                if (depth == targetDepth) {
+                for (int i = 0; i <= depth - targetDepth; i++) {
                     writePath = writePath.getParent();
                 }
                 depth = targetDepth;
-            } else {
-                if (targetDepth - depth < 1) {
-                    createYAML();
-                    for (int i = 0; i <= depth - targetDepth; i++) {
-                        writePath = writePath.getParent();
-                    }
-                    depth = targetDepth;
-                }
             }
             return true;
         }
