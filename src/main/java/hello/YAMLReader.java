@@ -1,5 +1,6 @@
 package hello;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,7 +14,14 @@ import java.util.List;
 
 class YAMLReader {
     public static final int SPACES_PER_TAB = 2;
-    public static final String FOLDER_TYPE = "jcr:primaryType: hippostd:folder";
+    public static final String[] FOLDER_TYPES = {
+            "jcr:primaryType: hippostd:folder",
+            "jcr:primaryType: hst:channel",
+            "jcr:primaryType: hst:workspace",
+            "jcr:primaryType: hst:sitemenus",
+            "jcr:primaryType: hst:sitemap",
+            "jcr:primaryType: hst:pages"
+    };
     public static final String ROOT_JCR_PATH = "/content/documents/netherlandsandyou/";
     private final Path startPath;
     private List<String> lines;
@@ -55,10 +63,10 @@ class YAMLReader {
     public boolean processLines() throws Exception {
         if (!savedLines.isEmpty()) {
             int targetDepth = lines.size() > counter ? lines.get(counter).indexOf('/') / SPACES_PER_TAB : depth;
-            if (savedLines.get(1).contains(FOLDER_TYPE)) {
+            if (shouldBeDirectory()) {
                 createFolder();
             }
-            if(targetDepth - depth < 1 || savedLines.get(1).contains(FOLDER_TYPE)) {
+            if(targetDepth - depth < 1 || shouldBeDirectory()) {
                 createYAML();
                 for (int i = 0; i <= depth - targetDepth; i++) {
                     writePath = writePath.getParent();
@@ -66,6 +74,15 @@ class YAMLReader {
                 depth = targetDepth;
             }
             return true;
+        }
+        return false;
+    }
+
+    private boolean shouldBeDirectory() {
+        for(String folderType : FOLDER_TYPES) {
+            if(savedLines.get(1).trim().equals(folderType)){
+                return true;
+            }
         }
         return false;
     }
@@ -98,7 +115,7 @@ class YAMLReader {
     }
 
     private String getCurrentFileName(String name) {
-        String trimmedName = name.trim();
+        String trimmedName = name.trim().replace("hst:", "");
         if(duplicate) {
             return trimmedName.substring(3, trimmedName.length() - 1);
         } else {
@@ -109,7 +126,7 @@ class YAMLReader {
     private String getInnerFileName(String name) {
         String fileName = getCurrentFileName(name);
         String subPath = startPath.getNameCount() < writePath.getNameCount() ?
-                writePath.subpath(startPath.getNameCount(), writePath.getNameCount()).toString() + "/":
+                writePath.subpath(startPath.getNameCount(), writePath.getNameCount()).toString().replace("\\", "/") + "/":
                 "";
         return ROOT_JCR_PATH + subPath + fileName + ":";
     }
