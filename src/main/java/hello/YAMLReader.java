@@ -1,6 +1,5 @@
 package hello;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -64,6 +63,9 @@ class YAMLReader {
     public boolean processLines() throws Exception {
         if (!savedLines.isEmpty()) {
             int targetDepth = lines.size() > counter ? lines.get(counter).indexOf('/') / SPACES_PER_TAB : depth;
+            if (lines.get(counter).trim().startsWith("? /")) {
+                targetDepth--;
+            }
             if (shouldBeDirectory()) {
                 createFolder();
             }

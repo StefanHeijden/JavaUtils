@@ -43,7 +43,7 @@ public class HelloWorld {
                 return true;
             case 2:
                 deleteDirectory(new File(System.getProperty("user.dir") + TARGET_LOCATION).toPath(), true);
-                ReadYamlFile("nieuws.yaml");
+                ReadYamlFile("act.yaml");
                 return true;
             case 3:
                 System.out.println("Which file?");
