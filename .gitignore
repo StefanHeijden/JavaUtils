@@ -1,4 +1,6 @@
 /target
+/files
+/results
 dependency-reduced-pom.xml
 
 # Others
