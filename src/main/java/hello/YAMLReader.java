@@ -14,7 +14,8 @@ import java.util.List;
 
 class YAMLReader {
     public static final int SPACES_PER_TAB = 2;
-    public static final String[] FOLDER_TYPES = {
+    public static final String ROOT_JCR_PATH = "/content/documents/netherlandsandyou/";
+    private static final String[] FOLDER_TYPES = {
             "jcr:primaryType: hippostd:folder",
             "jcr:primaryType: hst:channel",
             "jcr:primaryType: hst:workspace",
@@ -22,7 +23,7 @@ class YAMLReader {
             "jcr:primaryType: hst:sitemap",
             "jcr:primaryType: hst:pages"
     };
-    public static final String ROOT_JCR_PATH = "/content/documents/netherlandsandyou/";
+    private static final String JCR_PATH_SEPARATOR = "/";
     private final Path startPath;
     private List<String> lines;
     private final List<String> savedLines;
@@ -126,7 +127,7 @@ class YAMLReader {
     private String getInnerFileName(String name) {
         String fileName = getCurrentFileName(name);
         String subPath = startPath.getNameCount() < writePath.getNameCount() ?
-                writePath.subpath(startPath.getNameCount(), writePath.getNameCount()).toString().replace("\\", "/") + "/":
+                writePath.subpath(startPath.getNameCount(), writePath.getNameCount()).toString().replace("\\", "/") + JCR_PATH_SEPARATOR:
                 "";
         return ROOT_JCR_PATH + subPath + fileName + ":";
     }
