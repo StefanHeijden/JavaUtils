@@ -18,13 +18,13 @@ public class HelloWorld {
             {"help", "List with commands", "0"},
             {"clean", "Delete results folder", "1"},
             {"test", "run a quick test for current implementation", "2"},
-            {"ry | yaml | read yaml", "read a yaml file and create a tree structure of folder and files", "3"}
+            {"ry | yaml | readyaml", "read a yaml file and create a tree structure of folder and files", "3"}
     };
 
     public static void main(String[] args) throws IOException {
         while(readInput()) {
             // keep reading input from user
-        };
+        }
     }
 
     public static boolean readInput() throws IOException {
@@ -43,12 +43,12 @@ public class HelloWorld {
                 return true;
             case 2:
                 deleteDirectory(new File(System.getProperty("user.dir") + TARGET_LOCATION).toPath(), true);
-                ReadYAMLFile("nieuws.yaml");
+                ReadYamlFile("nieuws.yaml");
                 return true;
             case 3:
                 System.out.println("Which file?");
                 String fileName = reader.readLine();
-                ReadYAMLFile(fileName);
+                ReadYamlFile(fileName);
                 return true;
             // Add new commands here ------------------------------------------
             default:
@@ -70,11 +70,15 @@ public class HelloWorld {
         return 0;
     }
 
-    private static void ReadYAMLFile(String fileName) {
+    private static void ReadYamlFile(String fileName) {
         fileName = fileName.endsWith(".yaml") ? fileName : fileName + ".yaml";
         Path filePath = new File(System.getProperty("user.dir") + FILE_LOCATION + fileName).toPath();
         Path targetPath = new File(System.getProperty("user.dir") + TARGET_LOCATION).toPath();
-        new YAMLReader(filePath, targetPath);
+        try {
+            new YAMLReader(filePath, targetPath);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public static void printHelpList(){

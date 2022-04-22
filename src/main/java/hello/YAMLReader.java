@@ -1,6 +1,5 @@
 package hello;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,25 +12,22 @@ import java.util.List;
 
 class YAMLReader {
     public static final int SPACES_PER_TAB = 2;
-    public static final String[] folderTypes= {
-            "hippo:handle",
-    };
-    List<String> lines;
-    List<String> savedLines;
-    Path writePath;
-    int counter = 0;
-    int depth = 0;
-    boolean duplicate = false;
+    public static final String FOLDER_TYPE = "jcr:primaryType: hippostd:folder";
+    private final Path startPath;
+    private List<String> lines;
+    private final List<String> savedLines;
+    private Path writePath;
+    private int counter = 0;
+    private int depth = 0;
+    private boolean duplicate = false;
 
-    public YAMLReader(Path filePath, Path targetPath) {
-        System.out.print("Start reading YAML file");
+    public YAMLReader(Path filePath, Path targetPath) throws Exception {
+        startPath = targetPath; writePath = targetPath; savedLines = new ArrayList<>();
         try {
             lines = Files.readAllLines(filePath);
-            System.out.println(".");
-            savedLines = new ArrayList<>();
-            writePath = targetPath;
-            while(readYAML()) {
-
+            readYAML();
+            while(processLines()) {
+                readYAML();
             }
         } catch (FileNotFoundException e) {
             System.out.println("File was not found: \n " + e.getMessage());
@@ -40,7 +36,7 @@ class YAMLReader {
         }
     }
 
-    public boolean readYAML() {
+    public void readYAML() {
         if (lines.size() > counter) {
             if (lines.get(counter).trim().startsWith("? /")) {
                 duplicate = true;
@@ -51,15 +47,16 @@ class YAMLReader {
                 savedLines.add(lines.get(counter));
                 counter++;
             }
-            int targetDepth = lines.size() > counter ? (int) lines.get(counter).indexOf('/') / SPACES_PER_TAB : depth;
-            if (savedLines.get(1).contains("jcr:primaryType: hippostd:folder")) {
-                try {
-                    Files.createDirectories(Paths.get(writePath + "\\" + getCurrentFileName()));
-                } catch (IOException e) {
-                    System.out.println("Error creating directory at " + writePath + "\n" + e.getMessage());
-                }
+        }
+    }
+
+    public boolean processLines() throws Exception {
+        if (!savedLines.isEmpty()) {
+            int targetDepth = lines.size() > counter ? lines.get(counter).indexOf('/') / SPACES_PER_TAB : depth;
+            if (savedLines.get(1).contains(FOLDER_TYPE)) {
+                createFolder();
             }
-            if(targetDepth - depth < 1 || savedLines.get(1).contains("jcr:primaryType: hippostd:folder")) {
+            if(targetDepth - depth < 1 || savedLines.get(1).contains(FOLDER_TYPE)) {
                 createYAML();
                 for (int i = 0; i <= depth - targetDepth; i++) {
                     writePath = writePath.getParent();
@@ -71,9 +68,18 @@ class YAMLReader {
         return false;
     }
 
-    public void createYAML() {
+    public void createFolder() throws Exception {
         try {
-            FileWriter writer = new FileWriter(Paths.get(writePath +  "\\" + getCurrentFileName() + ".yaml").toFile());
+            if (writePath.getNameCount() < startPath.getNameCount()) {
+                throw new Exception("Tried writing to root folder!");
+            }
+            Files.createDirectories(Paths.get(writePath + "\\" + getCurrentFileName()));
+        } catch (IOException e) {
+            System.out.println("Error creating directory at " + writePath + "\n" + e.getMessage());
+        }
+    }
+    public void createYAML() {
+        try(FileWriter writer = new FileWriter(Paths.get(writePath +  "\\" + getCurrentFileName() + ".yaml").toFile())) {
             for(String str: savedLines) {
                 if (str.length() < depth * SPACES_PER_TAB) {
                     writer.write(str + System.lineSeparator());
@@ -81,11 +87,10 @@ class YAMLReader {
                     writer.write(str.substring(depth * SPACES_PER_TAB) + System.lineSeparator());
                 }
             }
-            writer.close();
         } catch (IOException e) {
             System.out.println("Error creating YAML file at " + writePath +  "/" + getCurrentFileName() + ".yaml" + "\n" + e.getMessage());
         }
-        writePath = Paths.get(writePath +  "\\" + getCurrentFileName());
+        writePath = Paths.get(String.format("%s\\%s", writePath, getCurrentFileName()));
         duplicate = false;
         savedLines.clear();
     }
