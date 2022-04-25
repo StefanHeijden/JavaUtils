@@ -1,4 +1,5 @@
 /target
+/.idea
 /files
 /results
 dependency-reduced-pom.xml
