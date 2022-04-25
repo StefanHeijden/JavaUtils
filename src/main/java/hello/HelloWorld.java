@@ -18,7 +18,8 @@ public class HelloWorld {
             {"help", "List with commands", "0"},
             {"clean", "Delete results folder", "1"},
             {"test", "run a quick test for current implementation", "2"},
-            {"ry | yaml | readyaml", "read a yaml file and create a tree structure of folder and files", "3"}
+            {"ry | yaml | readyaml", "read a yaml file and create a tree structure of folder and files", "3"},
+            {"pee | process elastic export", "read a yaml file and create a tree structure of folder and files", "3"}
     };
 
     public static void main(String[] args) throws IOException {
@@ -50,11 +51,20 @@ public class HelloWorld {
                 String fileName = reader.readLine();
                 ReadYamlFile(fileName);
                 return true;
+            case 4:
+                processElasticExport(new ElasticExportProcessor("", ""));
+                return true;
             // Add new commands here ------------------------------------------
             default:
                 System.out.println("Command was not found.");
                 return true;
         }
+    }
+
+    private static void processElasticExport(ElasticExportProcessor elasticExportProcessor) {
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(System.in));
+        System.out.println("To do put this in extra file");
     }
 
     private static int getCommandIndex(String action) {
@@ -77,6 +87,7 @@ public class HelloWorld {
         try {
             new YAMLReader(filePath, targetPath);
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println(e.getMessage());
         }
     }

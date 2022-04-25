@@ -63,7 +63,7 @@ class YAMLReader {
     public boolean processLines() throws Exception {
         if (!savedLines.isEmpty()) {
             int targetDepth = lines.size() > counter ? lines.get(counter).indexOf('/') / SPACES_PER_TAB : depth;
-            if (lines.get(counter).trim().startsWith("? /")) {
+            if (lines.size() > counter && lines.get(counter).trim().startsWith("? /")) {
                 targetDepth--;
             }
             if (shouldBeDirectory()) {
