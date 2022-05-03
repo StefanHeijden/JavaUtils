@@ -1,6 +1,5 @@
 package hello;
 
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-class YAMLReader {
+public class YAMLReader {
     public static final int SPACES_PER_TAB = 2;
     public static final String ROOT_JCR_PATH = "/content/documents/netherlandsandyou/";
     private static final String[] FOLDER_TYPES = {
@@ -39,10 +38,8 @@ class YAMLReader {
             while(processLines()) {
                 readYAML();
             }
-        } catch (FileNotFoundException e) {
-            System.out.println("File was not found: \n " + e.getMessage());
         } catch (IOException e) {
-            System.out.println("Something went wrong reading the YAML file: \n " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -97,7 +94,7 @@ class YAMLReader {
             }
             Files.createDirectories(Paths.get(writePath + "\\" + getCurrentFileName(savedLines.get(0))));
         } catch (IOException e) {
-            System.out.println("Error creating directory at " + writePath + "\n" + e.getMessage());
+            e.printStackTrace();
         }
     }
     public void createYAML() {
@@ -110,7 +107,7 @@ class YAMLReader {
                 writer.write(str + System.lineSeparator());
             }
         } catch (IOException e) {
-            System.out.println("Error creating YAML file at " + writePath +  "/" + getCurrentFileName(savedLines.get(0)) + ".yaml" + "\n" + e.getMessage());
+            e.printStackTrace();
         }
         writePath = Paths.get(String.format("%s\\%s", writePath, getCurrentFileName(savedLines.get(0))));
         duplicate = false;
