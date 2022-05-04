@@ -1,8 +1,8 @@
 package utilities;
 
-import hello.ElasticExportProcessor;
-import hello.FileFinder;
-import hello.YAMLReader;
+import programs.ElasticExportProcessor;
+import programs.FileFinder;
+import programs.YAMLReader;
 
 import java.io.File;
 import java.io.IOException;
@@ -67,7 +67,6 @@ public class MainConsole implements UserInputReader {
         }
         return true;
     }
-
 
     private static void deleteDirectory(Path path, boolean rootFolder) throws IOException {
         if (Files.isDirectory(path, LinkOption.NOFOLLOW_LINKS)) {

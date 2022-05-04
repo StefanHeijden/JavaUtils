@@ -21,7 +21,7 @@ First you’ll need to setup a Java project for Maven to build. To keep the focu
 ---
 + Create a root project directory named `HelloWorldMaven` and `cd HelloWorldMaven`.
 + In a project directory of your choosing, create the following subdirectory structure.
-+ For example, with `mkdir -p src/main/java/hello` on *nix systems:*
++ For example, with `mkdir -p src/main/java/programs` on *nix systems:*
 
 + on Windows you can create this directory manually.
 
@@ -29,13 +29,13 @@ First you’ll need to setup a Java project for Maven to build. To keep the focu
     └── src
         └── main
             └── java
-                └── hello
+                └── programs
     ```
-+ Within the `src/main/java/hello` directory, you can create any Java classes you want. To maintain consistency with the rest of this guide, create these two classes: `HelloWorld.java` and `Greeter.java`.
++ Within the `src/main/java/programs` directory, you can create any Java classes you want. To maintain consistency with the rest of this guide, create these two classes: `HelloWorld.java` and `Greeter.java`.
 
-+ `src/main/java/hello/HelloWorld.java`
++ `src/main/java/programs/HelloWorld.java`
   ```
-  package hello;
+  package programs;
   public class HelloWorld {
       public static void main(String[] args) {
           Greeter greeter = new Greeter();
@@ -44,9 +44,9 @@ First you’ll need to setup a Java project for Maven to build. To keep the focu
   }
   ```
 
- + `src/main/java/hello/Greeter.java`
+ + `src/main/java/programs/Greeter.java`
     ```
-    package hello;
+    package programs;
     public class Greeter {
         public String sayHello() {
             return "Hello world!";
@@ -71,7 +71,7 @@ Now that you have a project that is ready to be built with Maven, the next step 
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.springframework</groupId>
-    <artifactId>jb-hello-world-maven</artifactId>
+    <artifactId>jb-programs-world-maven</artifactId>
     <packaging>jar</packaging>
     <version>0.1.0</version>
 
@@ -91,7 +91,7 @@ Now that you have a project that is ready to be built with Maven, the next step 
                             <transformers>
                                 <transformer
                                     implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>hello.HelloWorld</mainClass>
+                                    <mainClass>programs.HelloWorld</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
@@ -142,10 +142,10 @@ For example, suppose that in addition to saying "Hello World!", you want the app
 
 First, change HelloWorld.java to look like this:
 
-`src/main/java/hello/HelloWorld.java`
+`src/main/java/programs/HelloWorld.java`
 
 ```
-package hello;
+package programs;
 
 import org.joda.time.LocalTime;
 
@@ -199,7 +199,7 @@ Here’s the completed `pom.xml` file:
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.springframework</groupId>
-    <artifactId>hello-world-maven</artifactId>
+    <artifactId>programs-world-maven</artifactId>
     <packaging>jar</packaging>
     <version>0.1.0</version>
 
@@ -233,7 +233,7 @@ Here’s the completed `pom.xml` file:
                             <transformers>
                                 <transformer
                                     implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>hello.HelloWorld</mainClass>
+                                    <mainClass>programs.HelloWorld</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
@@ -249,4 +249,4 @@ Here’s the completed `pom.xml` file:
 ---
 + To run this project run the following command.
 
-    `java -cp target/jb-hello-world-maven-0.1.0.jar hello.HelloWorld`
+    `java -cp target/jb-programs-world-maven-0.1.0.jar programs.HelloWorld`

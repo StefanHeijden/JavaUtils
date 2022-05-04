@@ -1,4 +1,4 @@
-package hello;
+package programs;
 
 import java.io.FileWriter;
 import java.io.IOException;
