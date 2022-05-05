@@ -11,12 +11,13 @@ import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 
-public class MainConsole implements UserInputReader {
+public class MainConsole extends UserInputReader {
     public static final String FILE_LOCATION = "/files/";
     public static final String TARGET_LOCATION = "/results/";
     public static final String USER_DIR = "user.dir";
 
     public MainConsole() {
+        inputReaderTitle = "Main";
         startReadingInputFromUser();
     }
 
