@@ -13,8 +13,8 @@ public class ArrayConfig {
     }
 
     public void addConfig(String config) {
-        configKeys.add(config.split("=")[0].trim());
-        configValues.add(config.split("=")[1].trim());
+        configKeys.add(config.split(Configurator.CONFIGURATION_SEPARATOR)[0].trim());
+        configValues.add(config.split(Configurator.CONFIGURATION_SEPARATOR)[1].trim());
     }
 
     public String[][] toTable() {

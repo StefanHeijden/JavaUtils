@@ -8,10 +8,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Configurator extends AbstractConfigurator{
+public class Configurator {
+    public static final String APPLICATION_PATH = "C:\\Users\\stheijde\\Repositories\\Java\\java-hello-world-with-maven-master\\";
+    public static final String CONFIGURATION_SEPARATOR = "=";
 
-    @Override
-    public Map<String, String> getConfigurationFromFile(String filePath) {
+    private Configurator(){}
+
+    public static Map<String, String> getConfigurationFromFile(String filePath) {
         try (Stream<String> configStream = Files.lines(Paths.get(APPLICATION_PATH + filePath))){
             return configStream.map(Config::new).collect(Collectors.toMap(Config::getConfigKey, Config::getConfigValue));
         } catch (IOException e) {
@@ -20,11 +23,10 @@ public class Configurator extends AbstractConfigurator{
         return new HashMap<>();
     }
 
-    @Override
-    public String[][] getArrayConfigurationFromFile(String filePath) {
+    public static String[][] getArrayConfigurationFromFile(String filePath) {
         try (Stream<String> configStream = Files.lines(Paths.get(APPLICATION_PATH + filePath))){
             final ArrayConfig arrayConfig = new ArrayConfig();
-            configStream.forEach(config -> arrayConfig.addConfig(config));
+            configStream.forEach(arrayConfig::addConfig);
             return arrayConfig.toTable();
         } catch (IOException e) {
             e.printStackTrace();

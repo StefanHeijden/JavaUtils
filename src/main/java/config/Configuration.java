@@ -5,10 +5,12 @@ import java.util.NoSuchElementException;
 
 public class Configuration {
     Map<String, String> configurationMap;
+    String[][] commandsConfigurationArray;
     private static final String ERROR_MESSAGE = "Did not find configuration key: ";
 
-    public Configuration(Map<String, String> config) {
-        configurationMap = config;
+    public Configuration(String configFileLocation, String commandsConfigFileLocation) {
+        configurationMap = Configurator.getConfigurationFromFile(configFileLocation);
+        commandsConfigurationArray = Configurator.getArrayConfigurationFromFile(commandsConfigFileLocation);
     }
 
     public String getValue(String key) {
