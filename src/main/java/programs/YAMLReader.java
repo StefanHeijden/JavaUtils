@@ -19,7 +19,8 @@ public class YAMLReader {
             "jcr:primaryType: hst:workspace",
             "jcr:primaryType: hst:sitemenus",
             "jcr:primaryType: hst:sitemap",
-            "jcr:primaryType: hst:pages"
+            "jcr:primaryType: hst:pages",
+            "jcr:primaryType: hippogallery:stdImageGallery"
     };
     private static final String JCR_PATH_SEPARATOR = "/";
     private final Path startPath;

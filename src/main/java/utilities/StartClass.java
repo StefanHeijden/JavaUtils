@@ -1,6 +1,7 @@
 package utilities;
 
 import main.MainConsole;
+import programs.PrintHelp;
 import programs.Program;
 import programs.main.DeleteFilesInFolder;
 import programs.main.FindFiles;
@@ -18,6 +19,8 @@ public class StartClass {
         // read config?
         // setup ui?
         Map<String, Program> programs = new HashMap<>();
+        programs.put("exit", new ExitProgram());
+        programs.put("help", new PrintHelp());
         programs.put("clean", new DeleteFilesInFolder());
         programs.put("yaml", new ReadYaml());
         programs.put("find", new FindFiles());
@@ -25,6 +28,7 @@ public class StartClass {
         configs.put("FILE_LOCATION", FILE_LOCATION);
         configs.put("TARGET_LOCATION", TARGET_LOCATION);
         configs.put("USER_DIR", USER_DIR);
+        configs.put("PROGRAMS", programs);
         new MainConsole("Main", programs, configs);
     }
 }
