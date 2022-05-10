@@ -15,7 +15,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class FindFiles extends Program {
+public class FindFiles implements Program {
     @Override
     public boolean run(Map<String, Object> input) {
         final UserInterface ui = (UserInterface) input.get("UI");

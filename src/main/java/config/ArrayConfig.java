@@ -4,30 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ArrayConfig {
-    List<String> configKeys;
     List<String> configValues;
 
     ArrayConfig() {
-        configKeys = new ArrayList<>();
         configValues = new ArrayList<>();
     }
 
     public void addConfig(String config) {
-        configKeys.add(config.split(Configurator.CONFIGURATION_SEPARATOR)[0].trim());
-        configValues.add(config.split(Configurator.CONFIGURATION_SEPARATOR)[1].trim());
+        configValues.add(config);
     }
 
-    public String[][] toTable() {
-        if (configKeys.size() == configValues.size()) {
-            String[][] result = new String[configValues.size()][2];
-            for(int i = 0; i < result.length; i++) {
-                result[i][0] = configValues.get(i);
-                result[i][1] = configKeys.get(i);
-            }
-            return result;
-        } else {
-            throw new IllegalArgumentException("While creating configuration: length of config keys and values must be the same");
+    public String[] toArray() {
+        String[] result = new String[configValues.size()];
+        for(int i = 0; i < result.length; i++) {
+            result[i] = configValues.get(i);
         }
+        return result;
     }
 
 }

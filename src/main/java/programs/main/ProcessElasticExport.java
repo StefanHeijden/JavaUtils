@@ -6,7 +6,7 @@ import utilities.UserInterface;
 
 import java.util.Map;
 
-public class ProcessElasticExport extends Program {
+public class ProcessElasticExport implements Program {
     @Override
     public boolean run(Map<String, Object> input) {
         final UserInterface ui = (UserInterface) input.get("UI");

@@ -23,11 +23,22 @@ public class Configurator {
         return new HashMap<>();
     }
 
-    public static String[][] getArrayConfigurationFromFile(String filePath) {
+    public static String[] getArrayConfigurationFromFile(String filePath) {
         try (Stream<String> configStream = Files.lines(Paths.get(APPLICATION_PATH + filePath))){
             final ArrayConfig arrayConfig = new ArrayConfig();
             configStream.forEach(arrayConfig::addConfig);
-            return arrayConfig.toTable();
+            return arrayConfig.toArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new String[0];
+    }
+
+    public static String[][] getTableConfigurationFromFile(String filePath) {
+        try (Stream<String> configStream = Files.lines(Paths.get(APPLICATION_PATH + filePath))){
+            final TableConfig tableConfig = new TableConfig();
+            configStream.forEach(tableConfig::addConfig);
+            return tableConfig.toTable();
         } catch (IOException e) {
             e.printStackTrace();
         }

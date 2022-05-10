@@ -10,7 +10,7 @@ import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.util.Map;
 
-public class DeleteFilesInFolder extends Program {
+public class DeleteFilesInFolder implements Program {
     @Override
     public boolean run(Map<String, Object> input) {
         final String USER_DIR = (String) input.get("USER_DIR");

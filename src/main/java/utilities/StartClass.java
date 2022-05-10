@@ -1,6 +1,7 @@
 package utilities;
 
 import main.MainConsole;
+import programs.ChangeCurrentPath;
 import programs.PrintHelp;
 import programs.Program;
 import programs.main.DeleteFilesInFolder;
@@ -24,6 +25,7 @@ public class StartClass {
         programs.put("clean", new DeleteFilesInFolder());
         programs.put("yaml", new ReadYaml());
         programs.put("find", new FindFiles());
+        programs.put("cd", new ChangeCurrentPath());
         Map<String, Object> configs = new HashMap<>();
         configs.put("FILE_LOCATION", FILE_LOCATION);
         configs.put("TARGET_LOCATION", TARGET_LOCATION);

@@ -4,7 +4,7 @@ import programs.Program;
 
 import java.util.Map;
 
-public class ExitProgram extends Program {
+public class ExitProgram implements Program {
     @Override
     public boolean run(Map<String, Object> input) {
         return false;

@@ -5,7 +5,7 @@ import utilities.UserInterface;
 
 import java.util.Map;
 
-public class DeleteAll extends Program {
+public class DeleteAll implements Program {
 
     @Override
     public boolean run(Map<String, Object> input) {

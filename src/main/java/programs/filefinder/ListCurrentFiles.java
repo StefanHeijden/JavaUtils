@@ -5,7 +5,7 @@ import utilities.UserInterface;
 
 import java.util.Map;
 
-public class ListCurrentFiles extends Program {
+public class ListCurrentFiles implements Program {
 
     @Override
     public boolean run(Map<String, Object> input) {

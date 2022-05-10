@@ -3,26 +3,15 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.springframework</groupId>
-    <artifactId>jb-hello-world-maven</artifactId>
+    <artifactId>java-utils</artifactId>
     <packaging>jar</packaging>
     <version>0.2.0</version>
 
-    <!-- tag::joda[] -->
      <properties>
            <java.version>1.8</java.version>
            <maven.compiler.source>1.6</maven.compiler.source>
            <maven.compiler.target>1.6</maven.compiler.target>
      </properties>
-
-      <dependencies>
-           <dependency>
-               <groupId>joda-time</groupId>
-               <artifactId>joda-time</artifactId>
-               <version>2.2</version>
-           </dependency>
-       </dependencies>
-       <!-- end::joda[] -->
-       
     <build>
         <plugins>
             <plugin>
@@ -39,7 +28,7 @@
                             <transformers>
                                 <transformer
                                     implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>programs.HelloWorld</mainClass>
+                                    <mainClass>utilities.StartClass</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>

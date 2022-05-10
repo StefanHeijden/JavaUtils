@@ -8,7 +8,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.Map;
 
-public class ReadYaml extends Program {
+public class ReadYaml implements Program {
 
     @Override
     public boolean run(Map<String, Object> input) {

@@ -1,5 +1,8 @@
 package programs;
 
+import config.Configuration;
+import config.Configurator;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,17 +14,10 @@ import java.util.Iterator;
 import java.util.List;
 
 public class YAMLReader {
-    public static final int SPACES_PER_TAB = 2;
-    public static final String ROOT_JCR_PATH = "/content/documents/netherlandsandyou/";
-    private static final String[] FOLDER_TYPES = {
-            "jcr:primaryType: hippostd:folder",
-            "jcr:primaryType: hst:channel",
-            "jcr:primaryType: hst:workspace",
-            "jcr:primaryType: hst:sitemenus",
-            "jcr:primaryType: hst:sitemap",
-            "jcr:primaryType: hst:pages",
-            "jcr:primaryType: hippogallery:stdImageGallery"
-    };
+    public final int SPACES_PER_TAB;
+    public final String ROOT_JCR_PATH;
+    private static final String[] FOLDER_TYPES = Configurator.getArrayConfigurationFromFile(
+            "configs\\folder-types.txt");
     private static final String JCR_PATH_SEPARATOR = "/";
     private final Path startPath;
     private List<String> lines;
@@ -31,7 +27,10 @@ public class YAMLReader {
     private int depth = 0;
     private boolean duplicate = false;
 
-    public YAMLReader(Path filePath, Path targetPath) throws Exception {
+    public YAMLReader(Path filePath, Path targetPath) throws IllegalAccessException {
+        Configuration configuration = new Configuration("configs\\yamlreader.txt");
+        SPACES_PER_TAB = configuration.getIntValue("SPACES_PER_TAB");
+        ROOT_JCR_PATH = configuration.getValue("ROOT_JCR_PATH");
         startPath = targetPath; writePath = targetPath; savedLines = new ArrayList<>();
         try {
             lines = Files.readAllLines(filePath);
@@ -58,7 +57,7 @@ public class YAMLReader {
         }
     }
 
-    public boolean processLines() throws Exception {
+    public boolean processLines() throws IllegalAccessException {
         if (!savedLines.isEmpty()) {
             int targetDepth = lines.size() > counter ? lines.get(counter).indexOf('/') / SPACES_PER_TAB : depth;
             if (lines.size() > counter && lines.get(counter).trim().startsWith("? /")) {
@@ -88,10 +87,10 @@ public class YAMLReader {
         return false;
     }
 
-    public void createFolder() throws Exception {
+    public void createFolder() throws IllegalAccessException {
         try {
             if (writePath.getNameCount() < startPath.getNameCount()) {
-                throw new Exception("Tried writing to root folder!");
+                throw new IllegalAccessException("Tried writing to root folder!");
             }
             Files.createDirectories(Paths.get(writePath + "\\" + getCurrentFileName(savedLines.get(0))));
         } catch (IOException e) {

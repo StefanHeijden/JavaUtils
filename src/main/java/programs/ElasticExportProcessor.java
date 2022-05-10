@@ -42,16 +42,16 @@ public class ElasticExportProcessor {
         return this;
     }
 
-    public ElasticExportProcessor scimJSONRequest(String JSON_var){
+    public ElasticExportProcessor scimJSONRequest(String jsonVariable){
         boolean saveNextLine = false;
-	    List<String> savedLines = new ArrayList();
+	    List<String> savedLines = new ArrayList<>();
         for(String line : lines) {
             if(saveNextLine) {
 		String newLine = line.trim();
                 savedLines.add(newLine.substring(1, newLine.length() - 1));
                 saveNextLine = false;
             }
-            if(line.contains(JSON_var)) {
+            if(line.contains(jsonVariable)) {
               saveNextLine = true;
             }
         }
@@ -60,11 +60,11 @@ public class ElasticExportProcessor {
     }
 
     public void start() throws IOException {
-        FileWriter fw = new FileWriter(targetFile);
-        for (String line : lines) {
-            fw.write(line + "\n");
+        try(FileWriter fw = new FileWriter(targetFile)) {
+            for (String line : lines) {
+                fw.write(line + "\n");
+            }
         }
-        fw.close();
     }
 
     private void createNewFile(String pathName) {

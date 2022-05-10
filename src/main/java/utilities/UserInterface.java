@@ -12,7 +12,6 @@ public class UserInterface{
     private final JTextArea console = new JTextArea(10, 10);
     private final JTextArea history = new JTextArea(10, 10);
     private boolean waitingForUserInput = false;
-    private StringBuilder userInput = new StringBuilder();
 
     public UserInterface(){
         JFrame f = new JFrame("Java Console");
@@ -31,9 +30,6 @@ public class UserInterface{
                 if (e.getKeyCode() == 10) {
                     waitingForUserInput = false;
                 }
-                if (Character.isLetterOrDigit(e.getKeyCode())) {
-                    userInput.append(e.getKeyChar());
-                }
             }
 
             @Override
@@ -51,6 +47,7 @@ public class UserInterface{
         f.setSize(900, 600);
         display.setEditable(false);
         history.setEditable(false);
+        console.setTabSize(0);
         for(int i = 0; i < 25; i++) {
             display.append("\n");
             history.append("\n");
@@ -61,7 +58,6 @@ public class UserInterface{
 
     public String getUserInput(String message) {
         waitingForUserInput = true;
-        userInput = new StringBuilder();
         try {
             printLine(message);
             console.setText("");
@@ -70,9 +66,10 @@ public class UserInterface{
                 sleep(30);
             }
             console.setEditable(false);
+            String userInput = console.getText().replace("\n", "");
+            printLine(history, userInput);
             console.setText("Loading");
-            printLine(history, userInput.toString());
-            return userInput.toString();
+            return userInput;
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
