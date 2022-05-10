@@ -1,0 +1,2 @@
+SPACES_PER_TAB = 2
+ROOT_JCR_PATH = /content/gallery/netherlandsandyou/content-afbeeldingen/

@@ -1,0 +1,7 @@
+jcr:primaryType: hippostd:folder
+jcr:primaryType: hst:channel
+jcr:primaryType: hst:workspace
+jcr:primaryType: hst:sitemenus
+jcr:primaryType: hst:sitemap
+jcr:primaryType: hst:pages
+jcr:primaryType: hippogallery:stdImageGallery
