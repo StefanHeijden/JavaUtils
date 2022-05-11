@@ -1,5 +1,6 @@
-package programs;
+package applications.consoles;
 
+import programs.Program;
 import utilities.UserInputReader;
 
 import java.util.Map;

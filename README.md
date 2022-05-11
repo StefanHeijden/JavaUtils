@@ -21,30 +21,30 @@ First you’ll need to setup a Java project for Maven to build. To keep the focu
 ---
 + Create a root project directory named `HelloWorldMaven` and `cd HelloWorldMaven`.
 + In a project directory of your choosing, create the following subdirectory structure.
-+ For example, with `mkdir -p src/main/java/programs` on *nix systems:*
++ For example, with `mkdir -p src/applications/java/programs` on *nix systems:*
 
 + on Windows you can create this directory manually.
 
     ```
     └── src
-        └── main
+        └── applications
             └── java
                 └── programs
     ```
-+ Within the `src/main/java/programs` directory, you can create any Java classes you want. To maintain consistency with the rest of this guide, create these two classes: `HelloWorld.java` and `Greeter.java`.
++ Within the `src/applications/java/programs` directory, you can create any Java classes you want. To maintain consistency with the rest of this guide, create these two classes: `HelloWorld.java` and `Greeter.java`.
 
-+ `src/main/java/programs/HelloWorld.java`
++ `src/applications/java/programs/HelloWorld.java`
   ```
   package programs;
   public class HelloWorld {
-      public static void main(String[] args) {
+      public static void applications(String[] args) {
           Greeter greeter = new Greeter();
           System.out.println(greeter.sayHello());
       }
   }
   ```
 
- + `src/main/java/programs/Greeter.java`
+ + `src/applications/java/programs/Greeter.java`
     ```
     package programs;
     public class Greeter {
@@ -142,7 +142,7 @@ For example, suppose that in addition to saying "Hello World!", you want the app
 
 First, change HelloWorld.java to look like this:
 
-`src/main/java/programs/HelloWorld.java`
+`src/applications/java/programs/HelloWorld.java`
 
 ```
 package programs;
@@ -150,7 +150,7 @@ package programs;
 import org.joda.time.LocalTime;
 
 public class HelloWorld {
-    public static void main(String[] args) {
+    public static void applications(String[] args) {
 		LocalTime currentTime = new LocalTime();
 		System.out.println("The current local time is: " + currentTime);
 		Greeter greeter = new Greeter();

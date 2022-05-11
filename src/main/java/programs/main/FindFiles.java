@@ -1,10 +1,10 @@
 package programs.main;
 
-import programs.FileFinder;
+import applications.consoles.FileFinder;
 import programs.PrintHelp;
 import programs.Program;
 import programs.filefinder.*;
-import utilities.ExitProgram;
+import programs.ExitProgram;
 import utilities.UserInterface;
 
 import java.io.IOException;
@@ -44,14 +44,14 @@ public class FindFiles implements Program {
 
     private Map<String, Object> getConfigs(Map<String, Program> programs, String fileName) {
         Map<String, Object> configs = new HashMap<>();
-        Collection<Path> foundFiles = listFilesUsingFileWalk(fileName, Integer.MAX_VALUE);
+        Collection<Path> foundFiles = listFilesUsingFileWalk(fileName);
         configs.put("PROGRAMS", programs);
         configs.put("FOUND_FILES", foundFiles);
         return configs;
     }
 
-    private Set<Path> listFilesUsingFileWalk(String dir, int depth) {
-        try (Stream<Path> stream = Files.walk(Paths.get(dir), depth)) {
+    private Set<Path> listFilesUsingFileWalk(String dir) {
+        try (Stream<Path> stream = Files.walk(Paths.get(dir), Integer.MAX_VALUE)) {
             return stream
                     .filter(path -> !Files.isDirectory(path))
                     .collect(Collectors.toSet());

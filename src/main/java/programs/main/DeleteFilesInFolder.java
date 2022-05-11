@@ -11,12 +11,19 @@ import java.nio.file.Path;
 import java.util.Map;
 
 public class DeleteFilesInFolder implements Program {
+    String userDirectory;
+    String targetLocation;
+
     @Override
-    public boolean run(Map<String, Object> input) {
-        final String USER_DIR = (String) input.get("USER_DIR");
-        final String TARGET_LOCATION = (String) input.get("TARGET_LOCATION");
+    public void init(Map<String, Object> input) {
+        userDirectory = (String) input.get("USER_DIR");
+        targetLocation = (String) input.get("TARGET_LOCATION");
+    }
+
+    @Override
+    public boolean work(Map<String, Object> input) {
         try {
-            deleteDirectory(new File(System.getProperty(USER_DIR) + TARGET_LOCATION).toPath(), true);
+            deleteDirectory(new File(System.getProperty(userDirectory) + targetLocation).toPath(), true);
         } catch(IOException e) {
             e.printStackTrace();
         }

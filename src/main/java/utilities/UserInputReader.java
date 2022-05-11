@@ -1,6 +1,6 @@
 package utilities;
 
-import config.Configurator;
+import configurators.Configurator;
 import programs.Program;
 
 import java.nio.file.Path;

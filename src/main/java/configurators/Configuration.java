@@ -1,4 +1,4 @@
-package config;
+package configurators;
 
 import java.util.Map;
 import java.util.NoSuchElementException;

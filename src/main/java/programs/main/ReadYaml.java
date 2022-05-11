@@ -1,7 +1,7 @@
 package programs.main;
 
 import programs.Program;
-import programs.YAMLReader;
+import applications.YAMLReader;
 import utilities.UserInterface;
 
 import java.io.File;

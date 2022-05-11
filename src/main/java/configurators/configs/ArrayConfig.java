@@ -1,12 +1,12 @@
-package config;
+package configurators.configs;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ArrayConfig {
-    List<String> configValues;
+    private final List<String> configValues;
 
-    ArrayConfig() {
+    public ArrayConfig() {
         configValues = new ArrayList<>();
     }
 

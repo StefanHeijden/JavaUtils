@@ -1,7 +1,7 @@
-package programs;
+package applications;
 
-import config.Configuration;
-import config.Configurator;
+import configurators.Configuration;
+import configurators.Configurator;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -14,8 +14,9 @@ import java.util.Iterator;
 import java.util.List;
 
 public class YAMLReader {
-    public final int SPACES_PER_TAB;
-    public final String ROOT_JCR_PATH;
+    public static final Configuration configuration = new Configuration("configs\\yaml-reader.txt");
+    public static final int SPACES_PER_TAB = configuration.getIntValue("SPACES_PER_TAB");
+    public static final String ROOT_JCR_PATH  = configuration.getValue("ROOT_JCR_PATH");
     private static final String[] FOLDER_TYPES = Configurator.getArrayConfigurationFromFile(
             "configs\\folder-types.txt");
     private static final String JCR_PATH_SEPARATOR = "/";
@@ -28,9 +29,6 @@ public class YAMLReader {
     private boolean duplicate = false;
 
     public YAMLReader(Path filePath, Path targetPath) throws IllegalAccessException {
-        Configuration configuration = new Configuration("configs\\yamlreader.txt");
-        SPACES_PER_TAB = configuration.getIntValue("SPACES_PER_TAB");
-        ROOT_JCR_PATH = configuration.getValue("ROOT_JCR_PATH");
         startPath = targetPath; writePath = targetPath; savedLines = new ArrayList<>();
         try {
             lines = Files.readAllLines(filePath);

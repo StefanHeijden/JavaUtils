@@ -1,12 +1,8 @@
 package utilities;
 
-import main.MainConsole;
-import programs.ChangeCurrentPath;
-import programs.PrintHelp;
-import programs.Program;
-import programs.main.DeleteFilesInFolder;
-import programs.main.FindFiles;
-import programs.main.ReadYaml;
+import applications.consoles.MainConsole;
+import programs.*;
+import programs.main.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,13 +13,12 @@ public class StartClass {
     public static final String USER_DIR = "user.dir";
 
     public static void main(String[] args) {
-        // read config?
-        // setup ui?
         Map<String, Program> programs = new HashMap<>();
         programs.put("exit", new ExitProgram());
         programs.put("help", new PrintHelp());
         programs.put("clean", new DeleteFilesInFolder());
         programs.put("yaml", new ReadYaml());
+        programs.put("elastic", new ProcessElasticExport());
         programs.put("find", new FindFiles());
         programs.put("cd", new ChangeCurrentPath());
         Map<String, Object> configs = new HashMap<>();

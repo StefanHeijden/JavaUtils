@@ -1,4 +1,8 @@
-package config;
+package configurators;
+
+import configurators.configs.ArrayConfig;
+import configurators.configs.Config;
+import configurators.configs.TableConfig;
 
 import java.io.IOException;
 import java.nio.file.Files;

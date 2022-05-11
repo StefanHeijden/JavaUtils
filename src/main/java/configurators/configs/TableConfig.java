@@ -1,13 +1,15 @@
-package config;
+package configurators.configs;
+
+import configurators.Configurator;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TableConfig {
-    List<String> configKeys;
-    List<String> configValues;
+    private final List<String> configKeys;
+    private final List<String> configValues;
 
-    TableConfig() {
+    public TableConfig() {
         configKeys = new ArrayList<>();
         configValues = new ArrayList<>();
     }
