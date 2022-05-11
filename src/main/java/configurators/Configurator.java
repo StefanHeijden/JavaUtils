@@ -2,7 +2,6 @@ package configurators;
 
 import configurators.configs.ArrayConfig;
 import configurators.configs.Config;
-import configurators.configs.TableConfig;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -36,17 +35,6 @@ public class Configurator {
             e.printStackTrace();
         }
         return new String[0];
-    }
-
-    public static String[][] getTableConfigurationFromFile(String filePath) {
-        try (Stream<String> configStream = Files.lines(Paths.get(APPLICATION_PATH + filePath))){
-            final TableConfig tableConfig = new TableConfig();
-            configStream.forEach(tableConfig::addConfig);
-            return tableConfig.toTable();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new String[0][0];
     }
 
 }

@@ -36,6 +36,7 @@ public class UserInputReader {
             for (int i = 1; i < userInputs.length; i++) {
                 configs.put("INPUT_PARAMETER_" + i, userInputs[i]);
             }
+            configs.put("CURRENT_PATH", currentPath);
             return programMap.get(userInputs[0]).run(configs);
         } else {
             ui.printLine("Command was not found.");
@@ -45,9 +46,5 @@ public class UserInputReader {
 
     public static void setCurrentPath(Path path) {
         currentPath = currentPath.resolve(path).normalize();
-    }
-
-    public static Path getCurrentPath() {
-        return currentPath;
     }
 }

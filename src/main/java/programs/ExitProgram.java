@@ -1,7 +1,5 @@
 package programs;
 
-import programs.Program;
-
 import java.util.Map;
 
 public class ExitProgram implements Program {

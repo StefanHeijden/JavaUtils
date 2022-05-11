@@ -76,10 +76,6 @@ public class UserInterface{
         return "exit";
     }
 
-    public void printWord(Object message) {
-        display.append(message.toString());
-    }
-
     public void printLine(Object message) {
         printLine(display, message);
     }
@@ -93,14 +89,6 @@ public class UserInterface{
             e.printStackTrace();
         }
         textArea.replaceRange("", 0, end);
-    }
-
-    public void printWithTab(String firstMessage, String secondMessage, int tabLength){
-        printWord(firstMessage);
-        for(int i = firstMessage.length(); i< tabLength; i++) {
-            printWord(" ");
-        }
-        printWord(secondMessage);
     }
 
 }

@@ -27,11 +27,4 @@ public class Configuration {
         }
     }
 
-    public boolean getBoolValue(String key) {
-        if(configurationMap.containsKey(key)) {
-            return Boolean.parseBoolean(configurationMap.get(key));
-        }else {
-            throw new NoSuchElementException(ERROR_MESSAGE + key);
-        }
-    }
 }
