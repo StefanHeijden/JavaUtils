@@ -2,7 +2,7 @@ package programs.elasticexport;
 
 import java.util.Map;
 
-public class Replace extends ElasticExportProgram {
+public class Replace extends AbstractElasticExportProgram {
     String from;
     String to;
 

@@ -8,7 +8,7 @@ import utilities.UserInterface;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ConsoleProgram implements Program {
+public class AbstractConsoleProgram implements Program {
     UserInterface ui;
     Map<String, Program> programs;
     Map<String, Object> configs;

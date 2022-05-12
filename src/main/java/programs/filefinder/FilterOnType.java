@@ -3,7 +3,7 @@ package programs.filefinder;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class FilterOnType extends FileFinderProgram {
+public class FilterOnType extends AbstractFileFinderProgram {
     String fileType;
 
     @Override

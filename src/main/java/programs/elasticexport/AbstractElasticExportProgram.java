@@ -6,7 +6,7 @@ import utilities.UserInterface;
 import java.util.Map;
 import java.util.stream.Stream;
 
-public class ElasticExportProgram implements Program {
+public class AbstractElasticExportProgram implements Program {
     Stream<String> lines;
     UserInterface ui;
 

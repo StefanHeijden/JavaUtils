@@ -2,7 +2,7 @@ package programs.filefinder;
 
 import java.util.Map;
 
-public class ListCurrentFiles extends FileFinderProgram {
+public class ListCurrentFiles extends AbstractFileFinderProgram {
 
     @Override
     public boolean work(Map<String, Object> input) {

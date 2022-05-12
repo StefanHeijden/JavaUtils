@@ -12,7 +12,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class FindFiles extends ConsoleProgram {
+public class FindFiles extends AbstractConsoleProgram {
 
     @Override
     public void init(Map<String, Object> input) {

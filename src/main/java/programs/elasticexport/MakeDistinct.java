@@ -2,7 +2,7 @@ package programs.elasticexport;
 
 import java.util.Map;
 
-public class MakeDistinct extends ElasticExportProgram {
+public class MakeDistinct extends AbstractElasticExportProgram {
 
     @Override
     public boolean work(Map<String, Object> input) {

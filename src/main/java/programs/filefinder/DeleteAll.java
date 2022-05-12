@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Map;
 
-public class DeleteAll extends FileFinderProgram {
+public class DeleteAll extends AbstractFileFinderProgram {
 
     @Override
     public boolean work(Map<String, Object> input) {

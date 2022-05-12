@@ -2,7 +2,7 @@ package programs.elasticexport;
 
 import java.util.Map;
 
-public class TrimString extends ElasticExportProgram {
+public class TrimString extends AbstractElasticExportProgram {
     int start;
     int end;
 

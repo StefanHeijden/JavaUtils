@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
-public class FileFinderProgram implements Program {
+public class AbstractFileFinderProgram implements Program {
     Collection<Path> foundFiles;
     UserInterface ui;
     Collection<Path> files;

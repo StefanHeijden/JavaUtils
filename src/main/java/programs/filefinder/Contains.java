@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public class Contains extends FileFinderProgram {
+public class Contains extends AbstractFileFinderProgram {
     String element;
 
     @Override

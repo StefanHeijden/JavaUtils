@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class Start extends ElasticExportProgram {
+public class Start extends AbstractElasticExportProgram {
     String targetFileLocation;
 
     @Override
