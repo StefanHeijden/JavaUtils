@@ -2,9 +2,11 @@ package programs.main;
 
 import programs.Program;
 import applications.YAMLReader;
+import utilities.Logger;
 import utilities.UserInterface;
 
 import java.io.File;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.Map;
 
@@ -22,8 +24,11 @@ public class ReadYaml implements Program {
             Path filePath = new File(System.getProperty(USER_DIR) + FILE_LOCATION + fileName).toPath();
             Path targetPath = new File(System.getProperty(USER_DIR) + TARGET_LOCATION).toPath();
             new YAMLReader(filePath, targetPath);
+        } catch (NoSuchFileException e) {
+            Logger.log(e);
+            ui.printLine(e.toString());
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.log(e);
         }
         input.remove(INPUT_PARAMETER_1);
         return true;

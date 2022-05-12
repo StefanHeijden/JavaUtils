@@ -1,7 +1,7 @@
 package programs.main;
 
 import applications.consoles.ElasticExportProcessor;
-import utilities.UserInterface;
+import utilities.Logger;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,7 +13,6 @@ import java.util.Map;
 public class ProcessElasticExport extends ConsoleProgram {
     String elasticFileLocation;
     String jsonVariable;
-    UserInterface ui;
 
     @Override
     public void init(Map<String, Object> input) {
@@ -36,7 +35,7 @@ public class ProcessElasticExport extends ConsoleProgram {
         try {
             lines = Files.readAllLines(Paths.get(elasticFileLocation));
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.log(e);
             return false;
         }
         List<String> savedLines = new ArrayList<>();

@@ -71,7 +71,7 @@ public class UserInterface{
             console.setText("Loading");
             return userInput;
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Logger.log(e);
         }
         return "exit";
     }
@@ -86,7 +86,7 @@ public class UserInterface{
         try {
             end = textArea.getLineEndOffset(0);
         } catch (BadLocationException e) {
-            e.printStackTrace();
+            Logger.log(e);
         }
         textArea.replaceRange("", 0, end);
     }

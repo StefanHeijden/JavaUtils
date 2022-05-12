@@ -2,6 +2,7 @@ package applications;
 
 import configurators.Configuration;
 import configurators.Configurator;
+import utilities.Logger;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -28,16 +29,12 @@ public class YAMLReader {
     private int depth = 0;
     private boolean duplicate = false;
 
-    public YAMLReader(Path filePath, Path targetPath) throws IllegalAccessException {
+    public YAMLReader(Path filePath, Path targetPath) throws IllegalAccessException, IOException {
         startPath = targetPath; writePath = targetPath; savedLines = new ArrayList<>();
-        try {
-            lines = Files.readAllLines(filePath);
+        lines = Files.readAllLines(filePath);
+        readYAML();
+        while(processLines()) {
             readYAML();
-            while(processLines()) {
-                readYAML();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -92,7 +89,7 @@ public class YAMLReader {
             }
             Files.createDirectories(Paths.get(writePath + "\\" + getCurrentFileName(savedLines.get(0))));
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.log(e);
         }
     }
     public void createYAML() {
@@ -105,7 +102,7 @@ public class YAMLReader {
                 writer.write(str + System.lineSeparator());
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.log(e);
         }
         writePath = Paths.get(String.format("%s\\%s", writePath, getCurrentFileName(savedLines.get(0))));
         duplicate = false;

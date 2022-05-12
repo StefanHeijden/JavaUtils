@@ -1,6 +1,7 @@
 package programs.main;
 
 import programs.Program;
+import utilities.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +26,7 @@ public class DeleteFilesInFolder implements Program {
         try {
             deleteDirectory(new File(System.getProperty(userDirectory) + targetLocation).toPath(), true);
         } catch(IOException e) {
-            e.printStackTrace();
+            Logger.log(e);
         }
         return true;
     }

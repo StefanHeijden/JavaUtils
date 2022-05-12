@@ -2,6 +2,7 @@ package configurators;
 
 import configurators.configs.ArrayConfig;
 import configurators.configs.Config;
+import utilities.Logger;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,7 +22,7 @@ public class Configurator {
         try (Stream<String> configStream = Files.lines(Paths.get(APPLICATION_PATH + filePath))){
             return configStream.map(Config::new).collect(Collectors.toMap(Config::getConfigKey, Config::getConfigValue));
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.log(e);
         }
         return new HashMap<>();
     }
@@ -32,7 +33,7 @@ public class Configurator {
             configStream.forEach(arrayConfig::addConfig);
             return arrayConfig.toArray();
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.log(e);
         }
         return new String[0];
     }

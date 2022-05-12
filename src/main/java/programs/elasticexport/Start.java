@@ -1,5 +1,7 @@
 package programs.elasticexport;
 
+import utilities.Logger;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -24,7 +26,7 @@ public class Start extends ElasticExportProgram {
                 fw.write(line + "\n");
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.log(e);
         }
         return false;
     }
@@ -42,7 +44,7 @@ public class Start extends ElasticExportProgram {
             }
         } catch (IOException e) {
             System.out.println("An error occurred.");
-            e.printStackTrace();
+            Logger.log(e);
         }
     }
 }

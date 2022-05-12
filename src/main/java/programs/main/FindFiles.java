@@ -2,6 +2,7 @@ package programs.main;
 
 import applications.consoles.FileFinder;
 import programs.filefinder.*;
+import utilities.Logger;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -33,7 +34,7 @@ public class FindFiles extends ConsoleProgram {
         try{
             new FileFinder("FileFinder", programs, configs);
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.log(e);
         }
         input.remove(INPUT_PARAMETER_1);
         return true;
