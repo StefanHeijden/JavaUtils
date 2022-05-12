@@ -1,6 +1,6 @@
 package programs.main;
 
-import applications.ElasticExportProcessor;
+import applications.consoles.ElasticExportProcessor;
 import utilities.UserInterface;
 
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package applications;
+package applications.consoles;
 
 import programs.Program;
 import utilities.UserInputReader;
