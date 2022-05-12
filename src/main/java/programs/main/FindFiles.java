@@ -1,11 +1,7 @@
 package programs.main;
 
 import applications.consoles.FileFinder;
-import programs.PrintHelp;
-import programs.Program;
 import programs.filefinder.*;
-import programs.ExitProgram;
-import utilities.UserInterface;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,39 +11,32 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class FindFiles implements Program {
-    @Override
-    public boolean run(Map<String, Object> input) {
-        final UserInterface ui = (UserInterface) input.get("UI");
-        try{
-            String fileName = input.containsKey(INPUT_PARAMETER_1) ? (String) input.get(INPUT_PARAMETER_1) : ui.getUserInput("Which file?");
-            Map<String, Program> programs = getPrograms();
-            new FileFinder("FileFinder", programs, getConfigs(programs, fileName));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        input.remove(INPUT_PARAMETER_1);
-        return true;
-    }
+public class FindFiles extends ConsoleProgram {
 
-    private Map<String, Program> getPrograms() {
-        Map<String, Program> programs = new HashMap<>();
-        programs.put("help", new PrintHelp());
+    @Override
+    public void init(Map<String, Object> input) {
+        super.init(input);
+        String fileName = input.containsKey(INPUT_PARAMETER_1) ? (String) input.get(INPUT_PARAMETER_1) : ui.getUserInput("Which file?");
+
         programs.put("contains", new Contains());
         programs.put("col", new ContainsInLine());
         programs.put("list", new ListCurrentFiles());
         programs.put("type", new FilterOnType());
         programs.put("delete", new DeleteAll());
-        programs.put("exit", new ExitProgram());
-        return programs;
+
+        Collection<Path> foundFiles = listFilesUsingFileWalk(fileName);
+        configs.put("FOUND_FILES", foundFiles);
     }
 
-    private Map<String, Object> getConfigs(Map<String, Program> programs, String fileName) {
-        Map<String, Object> configs = new HashMap<>();
-        Collection<Path> foundFiles = listFilesUsingFileWalk(fileName);
-        configs.put("PROGRAMS", programs);
-        configs.put("FOUND_FILES", foundFiles);
-        return configs;
+    @Override
+    public boolean work(Map<String, Object> input) {
+        try{
+            new FileFinder("FileFinder", programs, configs);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        input.remove(INPUT_PARAMETER_1);
+        return true;
     }
 
     private Set<Path> listFilesUsingFileWalk(String dir) {

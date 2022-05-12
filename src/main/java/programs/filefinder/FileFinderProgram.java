@@ -23,10 +23,8 @@ public class FileFinderProgram implements Program {
 
     @Override
     public void close(Map<String, Object> input) {
+        Program.super.init(input);
         foundFiles.clear();
         foundFiles.addAll(files);
-        input.remove(INPUT_PARAMETER_1);
-        input.remove(INPUT_PARAMETER_2);
-        input.remove(INPUT_PARAMETER_3);
     }
 }
