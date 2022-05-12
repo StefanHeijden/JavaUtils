@@ -46,7 +46,7 @@ public class FindFiles extends ConsoleProgram {
                     .filter(path -> !Files.isDirectory(path))
                     .collect(Collectors.toSet());
         } catch (IOException e) {
-            System.out.println("Something went wrong walking the dir");
+            Logger.log(e);
         }
         return new HashSet<>();
     }

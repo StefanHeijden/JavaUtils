@@ -2,10 +2,8 @@ package programs.elasticexport;
 
 import utilities.Logger;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -20,7 +18,7 @@ public class Start extends ElasticExportProgram {
 
     @Override
     public boolean work(Map<String, Object> input) {
-        createNewFile();
+        Logger.createNewFile(targetFileLocation);
         try(FileWriter fw = new FileWriter(targetFileLocation)) {
             for (String line : lines.collect(Collectors.toList())) {
                 fw.write(line + "\n");
@@ -31,20 +29,4 @@ public class Start extends ElasticExportProgram {
         return false;
     }
 
-    private void createNewFile() {
-        try {
-            File targetFile = new File(targetFileLocation);
-            if (targetFile.createNewFile()) {
-                System.out.println("File created: " + targetFile.getName());
-            } else {
-                System.out.println("File already exists. Clear content");
-                PrintWriter writer = new PrintWriter(targetFile);
-                writer.print("");
-                writer.close();
-            }
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
-            Logger.log(e);
-        }
-    }
 }

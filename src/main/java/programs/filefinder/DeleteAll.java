@@ -24,7 +24,6 @@ public class DeleteAll extends FileFinderProgram {
             }
         } catch(Exception e) {
             Logger.log(e);
-            System.out.println("Failed to start delete");
         }
         return true;
     }
