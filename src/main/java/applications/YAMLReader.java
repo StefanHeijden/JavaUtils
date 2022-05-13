@@ -22,7 +22,7 @@ public class YAMLReader {
             "configs\\folder-types.txt");
     private static final String JCR_PATH_SEPARATOR = "/";
     private final Path startPath;
-    private List<String> lines;
+    private final List<String> lines;
     private final List<String> savedLines;
     private Path writePath;
     private int counter = 0;
