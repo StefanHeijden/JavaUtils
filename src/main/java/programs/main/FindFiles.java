@@ -3,6 +3,7 @@ package programs.main;
 import applications.consoles.FileFinder;
 import programs.filefinder.*;
 import utilities.Logger;
+import utilities.UserInterface;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -17,7 +18,7 @@ public class FindFiles extends AbstractConsoleProgram {
     @Override
     public void init(Map<String, Object> input) {
         super.init(input);
-        String fileName = input.containsKey(INPUT_PARAMETER_1) ? (String) input.get(INPUT_PARAMETER_1) : ui.getUserInput("Which file?");
+        String fileName = input.containsKey(INPUT_PARAMETER_1) ? (String) input.get(INPUT_PARAMETER_1) : UserInterface.getUserInput("Which file?");
 
         programs.put("contains", new Contains());
         programs.put("col", new ContainsInLine());
@@ -36,7 +37,6 @@ public class FindFiles extends AbstractConsoleProgram {
         } catch (Exception e) {
             Logger.log(e);
         }
-        input.remove(INPUT_PARAMETER_1);
         return true;
     }
 

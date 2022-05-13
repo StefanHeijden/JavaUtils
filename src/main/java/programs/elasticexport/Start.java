@@ -1,6 +1,7 @@
 package programs.elasticexport;
 
 import utilities.Logger;
+import utilities.UserInterface;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,7 +14,7 @@ public class Start extends AbstractElasticExportProgram {
     @Override
     public void init(Map<String, Object> input) {
         super.init(input);
-        targetFileLocation = input.containsKey(INPUT_PARAMETER_1) ? (String) input.get("TARGET_FILE") : ui.getUserInput("Where to store results?");
+        targetFileLocation = input.containsKey(INPUT_PARAMETER_1) ? (String) input.get(INPUT_PARAMETER_1) : UserInterface.getUserInput("Where to store results?");
     }
 
     @Override

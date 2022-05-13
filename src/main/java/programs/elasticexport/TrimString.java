@@ -1,5 +1,7 @@
 package programs.elasticexport;
 
+import utilities.UserInterface;
+
 import java.util.Map;
 
 public class TrimString extends AbstractElasticExportProgram {
@@ -11,10 +13,10 @@ public class TrimString extends AbstractElasticExportProgram {
         super.init(input);
         start = input.containsKey(INPUT_PARAMETER_1) ?
                 (Integer) input.get(INPUT_PARAMETER_1) :
-                Integer.parseInt(ui.getUserInput("How many to trim from starting index?"));
+                Integer.parseInt(UserInterface.getUserInput("How many to trim from starting index?"));
         end = input.containsKey(INPUT_PARAMETER_2) ?
                 (Integer) input.get(INPUT_PARAMETER_2) :
-                Integer.parseInt(ui.getUserInput("How many to trim from last index?"));
+                Integer.parseInt(UserInterface.getUserInput("How many to trim from last index?"));
     }
 
     @Override

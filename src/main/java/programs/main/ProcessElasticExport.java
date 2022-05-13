@@ -6,6 +6,7 @@ import programs.elasticexport.Replace;
 import programs.elasticexport.Start;
 import programs.elasticexport.TrimString;
 import utilities.Logger;
+import utilities.UserInterface;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -25,8 +26,8 @@ public class ProcessElasticExport extends AbstractConsoleProgram {
         programs.put("trim", new TrimString());
         programs.put("distinct", new MakeDistinct());
         programs.put("start", new Start());
-        elasticFileLocation = input.containsKey(INPUT_PARAMETER_1) ? (String) input.get(INPUT_PARAMETER_1) : ui.getUserInput("Elastic file location?");
-        jsonVariable = input.containsKey(INPUT_PARAMETER_2) ? (String) input.get(INPUT_PARAMETER_2) : ui.getUserInput("What JSON variable?");
+        elasticFileLocation = input.containsKey(INPUT_PARAMETER_1) ? (String) input.get(INPUT_PARAMETER_1) : UserInterface.getUserInput("Elastic file location?");
+        jsonVariable = input.containsKey(INPUT_PARAMETER_2) ? (String) input.get(INPUT_PARAMETER_2) : UserInterface.getUserInput("What JSON variable?");
     }
 
     @Override

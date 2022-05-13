@@ -15,6 +15,7 @@ import java.util.stream.Stream;
 public class Configurator {
     public static final String APPLICATION_PATH = "C:\\Users\\stheijde\\Repositories\\Java\\java-hello-world-with-maven-master\\";
     public static final String CONFIGURATION_SEPARATOR = "=";
+    public static final String STRING_LINE_SEPARATOR = "/";
 
     private Configurator(){}
 

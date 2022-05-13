@@ -8,12 +8,16 @@ import javax.swing.text.BadLocationException;
 import static java.lang.Thread.sleep;
 
 public class UserInterface{
-    private final JTextArea display = new JTextArea(10, 10);
-    private final JTextArea console = new JTextArea(10, 10);
-    private final JTextArea history = new JTextArea(10, 10);
-    private boolean waitingForUserInput = false;
+    private static final JTextArea display = new JTextArea(10, 10);
+    private static final JTextArea console = new JTextArea(10, 10);
+    private static final JTextArea history = new JTextArea(10, 10);
+    private static boolean waitingForUserInput = false;
 
-    public UserInterface(){
+    private UserInterface() {
+
+    }
+
+    public static void init() {
         JFrame f = new JFrame("Java Console");
         console.setBorder(BorderFactory.createLineBorder(Color.black));
         JPanel p = new JPanel();
@@ -56,7 +60,7 @@ public class UserInterface{
     }
 
 
-    public String getUserInput(String message) {
+    public static String getUserInput(String message) {
         waitingForUserInput = true;
         try {
             printLine(message);
@@ -76,11 +80,11 @@ public class UserInterface{
         return "exit";
     }
 
-    public void printLine(Object message) {
+    public static void printLine(Object message) {
         printLine(display, message);
     }
 
-    public void printLine(JTextArea textArea, Object message) {
+    public static void printLine(JTextArea textArea, Object message) {
         textArea.append(message.toString() + "\n");
         int end = 0;
         try {

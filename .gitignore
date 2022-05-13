@@ -2,6 +2,7 @@
 /.idea
 /files
 /results
+/src/test/results
 dependency-reduced-pom.xml
 
 # Others

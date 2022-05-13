@@ -1,6 +1,7 @@
 package programs.filefinder;
 
 import utilities.Logger;
+import utilities.UserInterface;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,14 +11,14 @@ public class DeleteAll extends AbstractFileFinderProgram {
 
     @Override
     public boolean work(Map<String, Object> input) {
-        foundFiles.forEach(ui::printLine);
+        foundFiles.forEach(UserInterface::printLine);
         try {
-            if (ui.getUserInput("Delete these files?(" + foundFiles.size() + ")").equals("y")) {
+            if (UserInterface.getUserInput("Delete these files?(" + foundFiles.size() + ")").equals("y")) {
                 foundFiles.forEach(f -> {
                     try{
                         Files.delete(f);
                     } catch (IOException e) {
-                        ui.printLine("Failed to delete the file: " + f);
+                        UserInterface.printLine("Failed to delete the file: " + f);
                         Logger.log(e);
                     }
                 });
