@@ -19,6 +19,7 @@ public class StartClass {
         PROGRAMS.put("elastic", new ProcessElasticExport());
         PROGRAMS.put("find", new FindFiles());
         PROGRAMS.put("cd", new ChangeCurrentPath());
+        PROGRAMS.put("json", new ReadJson());
         CONFIGS.put("PROGRAMS", PROGRAMS);
     }
 
