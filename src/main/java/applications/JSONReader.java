@@ -15,6 +15,18 @@ import java.text.DecimalFormat;
 import java.time.*;
 import java.util.*;
 
+/*
+TODO
+	• Refactoring?
+	• Tab tussen woorden bij het printen
+	• Totaal overview weghalen bij general info
+	• Verschil tussen PR naar master en PR's naar andere / totaal?
+	• Standaard deviation? SD min en max?
+	• Range?
+	• PR die zijn geopened per dag?
+    • Gegevens in grafieken verwerken?
+    • Refactoring?
+ */
 public class JSONReader {
     public static final String DOUBLE_FORMAT_PATTERN = "##.00";
     private static final Integer[][] MONTHS_TO_BE_PRINTED = {
@@ -25,14 +37,15 @@ public class JSONReader {
     private final List<Date> startDates;
     private final List<Date> endDates;
     private final List<Long> durations;
-    private final List<String> lines;
+
+    private final List<String> linesForGeneralFile;
     public static final Integer SECONDS_IN_A_DAY = 86400;
 
     private final JSONArray jsonArray;
     private final Path filePath;
 
     public JSONReader (Path filePath) throws IOException {
-        startDates = new ArrayList<>();endDates = new ArrayList<>();durations = new ArrayList<>();lines = new ArrayList<>();
+        startDates = new ArrayList<>();endDates = new ArrayList<>();durations = new ArrayList<>();linesForGeneralFile = new ArrayList<>();
         this.filePath = filePath;
         InputStream is = Files.newInputStream(filePath);
         String jsonTxt = IOUtils.toString(is, StandardCharsets.UTF_8.toString());
@@ -42,13 +55,15 @@ public class JSONReader {
 
     private void run() {
         processEntireFile();
-        addGeneralStats(durations);
-        createResultFile(filePath.getParent() + "\\" + "platform.txt");
+        addGeneralStats(linesForGeneralFile, durations);
         for(Integer[] month : MONTHS_TO_BE_PRINTED) {
-            addGeneralStatsForMonth(month[0],month[1]);
-            addResourceConsumptionForOneMonth(month[0], month[1]);
-            createResultFile(filePath.getParent() + "\\" + "platform-" + month[0] + "-" + month[1] +".txt");
+            List<String> lines = new ArrayList<>();
+            linesForGeneralFile.add("\n" + month[0] + "-" + (month[1] < 10 ? "0" + month[1] : month[1]));
+            addGeneralStatsForMonth(lines, month[0], month[1]);
+            addResourceConsumptionForOneMonth(lines, month[0], month[1]);
+            createResultFile(lines, filePath.getParent() + "\\" + "platform-" + month[0] + "-" + month[1] +".txt");
         }
+        createResultFile(linesForGeneralFile, filePath.getParent() + "\\" + "platform.txt");
     }
 
     private void processEntireFile() {
@@ -64,7 +79,7 @@ public class JSONReader {
         }
     }
 
-    public void addGeneralStatsForMonth(int year, int month) {
+    public void addGeneralStatsForMonth(List<String> lines, int year, int month) {
         List<Long> durationsForThisMonth = new ArrayList<>();
         for (int i = 0; i < endDates.size();i++) {
             LocalDate localDate = toLocalDate(endDates.get(i));
@@ -72,27 +87,28 @@ public class JSONReader {
                 durationsForThisMonth.add(durations.get(i));
             }
         }
-        addGeneralStats(durationsForThisMonth);
+        addGeneralStats(lines, durationsForThisMonth);
+        printDuration(linesForGeneralFile, durations);
     }
 
-    private void addGeneralStats(List<Long> durations) {
-        lines.add("PR's: " + durations.size());
-        printDuration(durations);
-        lines.add("Maximum: " + fromEpochToDuration(getMaximum(durations)));
+    private void addGeneralStats(List<String> lines, List<Long> durations) {
+        lines.add("Total amount of PR's: " + durations.size());
+        printDuration(lines, durations);
+        lines.add("Maximum amount of time PR stayed open: " + fromEpochToDuration(getMaximum(durations)));
     }
 
-    private void printDuration(List<Long> durations) {
+    private void printDuration(List<String> lines, List<Long> durations) {
         Optional<Long> result = durations.stream().reduce(Long::sum);
         if(result.isPresent()) {
             long averageInEpoch = Math.floorDiv(result.get(), durations.size());
-            lines.add("Average duration: " + Duration.ofSeconds(Math.floorDiv(averageInEpoch, 1000)).toString().substring(2));
+            lines.add("Average time PR stays open: " + Duration.ofSeconds(Math.floorDiv(averageInEpoch, 1000)).toString().substring(2));
         } else {
             lines.add("No results found");
         }
     }
 
-    private void addResourceConsumptionForOneMonth(int year, int month) {
-        lines.add("Resource consumption: ");
+    private void addResourceConsumptionForOneMonth(List<String> lines, int year, int month) {
+        lines.add("\nResource consumption per day: ");
         Calendar cal = Calendar.getInstance();
         cal.clear();
         cal.set(year, month - 1, 1);
@@ -100,12 +116,14 @@ public class JSONReader {
         int daysInMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
         for (int i = 1; i <= daysInMonth; i++) {
             double result = getResourceConsumptionForOneDay(year, month, i);
-            lines.add("Day " + i + ": " + ((result < 1) ? "0" : "") + new DecimalFormat(DOUBLE_FORMAT_PATTERN).format(result));
+            lines.add("Day " + i + ": " + (i < 10 ? " " : "") + ((result < 1) ? "0" : "") + new DecimalFormat(DOUBLE_FORMAT_PATTERN).format(result));
             total += result;
         }
-        lines.add("Total: " + ((total < 1) ? "0" : "") + new DecimalFormat(DOUBLE_FORMAT_PATTERN).format(total));
+
+        lines.add(3, "Total amount of resource used this month: " + ((total < 1) ? "0" : "") + new DecimalFormat(DOUBLE_FORMAT_PATTERN).format(total));
         double average = total / daysInMonth;
-        lines.add("Average: " + ((average < 1) ? "0" : "") + new DecimalFormat(DOUBLE_FORMAT_PATTERN).format(average));
+        lines.add(4, "Average amount of resources used per day: " + ((average < 1) ? "0" : "") + new DecimalFormat(DOUBLE_FORMAT_PATTERN).format(average));
+        linesForGeneralFile.add("Average PR's open each day: " + ((average < 1) ? "0" : "") + new DecimalFormat(DOUBLE_FORMAT_PATTERN).format(average));
     }
 
     private double getResourceConsumptionForOneDay(int year, int month, int day) {
@@ -154,10 +172,13 @@ public class JSONReader {
     }
 
     private String fromEpochToDuration(Long epoch) {
-        return Duration.ofSeconds(Math.floorDiv(epoch, 1000)).toString().substring(2);
+        return Duration.ofSeconds(Math.floorDiv(epoch, 1000)).toString().substring(2)
+                .replace("H", " hours ")
+                .replace("M", " minutes ")
+                .replace("S", " seconds ");
     }
 
-    public void createResultFile(String path) {
+    public void createResultFile(List<String> lines, String path) {
         try(FileWriter writer = new FileWriter(path)) {
             for (String line : lines) {
                 writer.write(line  + System.lineSeparator());
@@ -165,7 +186,6 @@ public class JSONReader {
         } catch (IOException e) {
             Logger.log(e);
         }
-        lines.clear();
     }
 
 }
