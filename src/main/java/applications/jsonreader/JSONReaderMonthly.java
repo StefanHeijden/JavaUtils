@@ -24,7 +24,7 @@ public class JSONReaderMonthly {
             }
         }
         JSONReaderUtils.addGeneralStats(lines, durationsForThisMonth);
-        JSONReaderUtils.printDuration(linesForGeneralFile, durations);
+        JSONReaderUtils.printDuration(linesForGeneralFile, durationsForThisMonth);
     }
 
     public static void addResourceConsumptionForOneMonth(List<String> linesForGeneralFile, List<String> lines, List<Date> startDates, List<Date> endDates, int year, int month) {
