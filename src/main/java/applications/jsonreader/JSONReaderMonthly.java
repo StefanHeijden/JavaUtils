@@ -24,21 +24,25 @@ public class JSONReaderMonthly {
             }
         }
         JSONReaderUtils.addGeneralStats(lines, durationsForThisMonth);
-        JSONReaderUtils.printDuration(linesForGeneralFile, durationsForThisMonth);
+        linesForGeneralFile.add(JSONReaderUtils.printDuration(durationsForThisMonth));
     }
 
     public static void addResourceConsumptionForOneMonth(List<String> linesForGeneralFile, List<String> lines, List<Date> startDates, List<Date> endDates, int year, int month) {
-        lines.add("\nResource consumption per day: ");
+        lines.add("\n");
         Calendar cal = Calendar.getInstance();
         cal.clear();
         cal.set(year, month - 1, 1);
         double total = 0.0;
         int daysInMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+        lines.add(JSONReaderUtils.printRow(JSONReaderUtils.HEADERS_MONTH_FILE, JSONReaderUtils.COLUMN_WIDTH_MONTH_FILE));
         for (int i = 1; i <= daysInMonth; i++) {
             double result = getResourceConsumptionForOneDay(startDates, endDates, year, month, i);
-            lines.add(JSONReaderUtils.getSpacedString(
-                    "Day " + i + ": ",
-                    ((result < 1) ? "0" : "") + new DecimalFormat(JSONReaderUtils.DOUBLE_FORMAT_PATTERN).format(result)));
+            String[] toPrint = {
+                     i + "",
+                    ((result < 1) ? "0" : "") + new DecimalFormat(JSONReaderUtils.DOUBLE_FORMAT_PATTERN).format(result),
+                    0 + ""
+            };
+            lines.add(JSONReaderUtils.printRow(toPrint, JSONReaderUtils.COLUMN_WIDTH_MONTH_FILE));
             total += result;
         }
 
@@ -49,9 +53,7 @@ public class JSONReaderMonthly {
         lines.add(4, JSONReaderUtils.getSpacedString(
                 "Average amount of resources used per day: ",
                 ((average < 1) ? "0" : "") + new DecimalFormat(JSONReaderUtils.DOUBLE_FORMAT_PATTERN).format(average)));
-        linesForGeneralFile.add(JSONReaderUtils.getSpacedString(
-                "Average PR's open each day: ",
-                ((average < 1) ? "0" : "") + new DecimalFormat(JSONReaderUtils.DOUBLE_FORMAT_PATTERN).format(average)));
+        linesForGeneralFile.add(((average < 1) ? "0" : "") + new DecimalFormat(JSONReaderUtils.DOUBLE_FORMAT_PATTERN).format(average));
     }
 
     private static double getResourceConsumptionForOneDay(List<Date> startDates, List<Date> endDates, int year, int month, int day) {

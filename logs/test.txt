@@ -1,7 +1,7 @@
 2022-05-30T17:52:05.020+02:00[Europe/Berlin] org.json.JSONException: JSONObject["1000"] not found.
   org.json.JSONObject.get(JSONObject.java:587)
   org.json.JSONObject.getString(JSONObject.java:874)
-  applications.JSONReader.<init>(JSONReader.java:19)
+  applications.jsonreader.JSONReader.<init>(JSONReader.java:19)
   programs.main.ReadJson.work(ReadJson.java:30)
   programs.Program.run(Program.java:12)
   utilities.UserInputReader.readSingleInputFromUser(UserInputReader.java:38)

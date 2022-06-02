@@ -14,7 +14,23 @@ import java.util.Optional;
 public class JSONReaderUtils {
     public static final Integer SECONDS_IN_A_DAY = 86400;
     public static final String DOUBLE_FORMAT_PATTERN = "##.00";
-    public static final int COLUMN_WIDTH = 42;
+    public static final int COLUMN_WIDTH = 44;
+
+    protected static final String[] HEADERS_MAIN_FILE = {
+            "Date", "Average time PR stays open", "Average #PR's open each day"
+    };
+
+    protected static final int[] COLUMN_WIDTH_MAIN_FILE = {
+            10, 34, 30
+    };
+
+    protected static final String[] HEADERS_MONTH_FILE = {
+            "Day", "Open PR's", "PR's opened"
+    };
+
+    protected static final int[] COLUMN_WIDTH_MONTH_FILE = {
+            10, 12, 10
+    };
 
     private JSONReaderUtils() {
         // empty constructor
@@ -24,21 +40,21 @@ public class JSONReaderUtils {
         lines.add(getSpacedString(
                 "Total amount of PR's:",
                 durations.size() + ""));
-        printDuration(lines, durations);
+        lines.add(getSpacedString(
+                "Average time PR stays open: ",
+                printDuration(durations)));
         lines.add(getSpacedString(
                 "Maximum amount of time PR stayed open:",
                 JSONReaderUtils.fromEpochToDuration(JSONReaderUtils.getMaximum(durations))));
     }
 
-    public static void printDuration(List<String> lines, List<Long> durations) {
+    public static String printDuration(List<Long> durations) {
         Optional<Long> result = durations.stream().reduce(Long::sum);
         if(result.isPresent()) {
             long averageInEpoch = Math.floorDiv(result.get(), durations.size());
-            lines.add(getSpacedString(
-                    "Average time PR stays open: ",
-                    fromEpochToDuration(averageInEpoch)));
+            return fromEpochToDuration(averageInEpoch);
         } else {
-            lines.add("No results found");
+            return "No results found";
         }
     }
     public static long getMaximum(List<Long> durations) {
@@ -81,5 +97,16 @@ public class JSONReaderUtils {
             }
         }
         return result.toString();
+    }
+
+    public static String printRow(String[] columns, int[] columnWidth) {
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i< columns.length;i++) {
+            result.append(columns[i]);
+            for(int o =columns[i].length();o<columnWidth[i];o++) {
+                result.append(" ");
+            }
+        }
+        return result + "\n";
     }
 }

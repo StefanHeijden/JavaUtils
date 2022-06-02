@@ -1,6 +1,6 @@
 package programs.main;
 
-import applications.JSONReader;
+import applications.jsonreader.JSONReader;
 import configurators.Configurator;
 import programs.Program;
 import utilities.Logger;

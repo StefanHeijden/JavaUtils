@@ -1,7 +1,5 @@
-package applications;
+package applications.jsonreader;
 
-import applications.jsonreader.JSONReaderMonthly;
-import applications.jsonreader.JSONReaderUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.apache.commons.io.IOUtils;
@@ -15,6 +13,7 @@ import java.util.*;
 
 /*
 TODO
+    • Checken waarom bz niet werkt (=> Check logging)
 	• Verschil tussen PR naar master en PR's naar andere / totaal?
 	• Standaard deviation? SD min en max?
 	• Range?
@@ -28,6 +27,7 @@ public class JSONReader {
             {2021, 12}, {2021, 11}, {2021, 10}, {2021, 9}, {2021, 8}, {2021, 7},
             {2021, 6}, {2021, 5}, {2021, 4}, {2021, 3}, {2021, 2}, {2021, 1}
     };
+
     private final List<Date> startDates;
     private final List<Date> endDates;
     private final List<Long> durations;
@@ -48,12 +48,16 @@ public class JSONReader {
 
     private void run() {
         processEntireFile();
+        linesForGeneralFile.add(JSONReaderUtils.printRow(JSONReaderUtils.HEADERS_MAIN_FILE, JSONReaderUtils.COLUMN_WIDTH_MAIN_FILE));
         for(Integer[] month : MONTHS_TO_BE_PRINTED) {
             List<String> lines = new ArrayList<>();
-            linesForGeneralFile.add("\n" + month[0] + "-" + (month[1] < 10 ? "0" + month[1] : month[1]));
-            JSONReaderMonthly.addGeneralStatsForMonth(linesForGeneralFile, durations, endDates, lines, month[0], month[1]);
-            JSONReaderMonthly.addResourceConsumptionForOneMonth(linesForGeneralFile, lines, startDates, endDates, month[0], month[1]);
+            List<String> linesForMainFile = new ArrayList<>();
+            linesForMainFile.add(month[0] + "-" + (month[1] < 10 ? "0" + month[1] : month[1]));
+            JSONReaderMonthly.addGeneralStatsForMonth(linesForMainFile, durations, endDates, lines, month[0], month[1]);
+            JSONReaderMonthly.addResourceConsumptionForOneMonth(linesForMainFile, lines, startDates, endDates, month[0], month[1]);
             JSONReaderUtils.createResultFile(lines, filePath.getParent() + "\\" + "platform-" + month[0] + "-" + month[1] +".txt");
+            String[] resultArray = linesForMainFile.toArray(new String[0]);
+            linesForGeneralFile.add(JSONReaderUtils.printRow(resultArray, JSONReaderUtils.COLUMN_WIDTH_MAIN_FILE));
         }
         JSONReaderUtils.createResultFile(linesForGeneralFile, filePath.getParent() + "\\" + "platform.txt");
     }
