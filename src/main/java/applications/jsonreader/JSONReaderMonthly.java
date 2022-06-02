@@ -36,14 +36,22 @@ public class JSONReaderMonthly {
         int daysInMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
         for (int i = 1; i <= daysInMonth; i++) {
             double result = getResourceConsumptionForOneDay(startDates, endDates, year, month, i);
-            lines.add("Day " + i + ": " + (i < 10 ? " " : "") + ((result < 1) ? "0" : "") + new DecimalFormat(JSONReaderUtils.DOUBLE_FORMAT_PATTERN).format(result));
+            lines.add(JSONReaderUtils.getSpacedString(
+                    "Day " + i + ": ",
+                    ((result < 1) ? "0" : "") + new DecimalFormat(JSONReaderUtils.DOUBLE_FORMAT_PATTERN).format(result)));
             total += result;
         }
 
-        lines.add(3, "Total amount of resource used this month: " + ((total < 1) ? "0" : "") + new DecimalFormat(JSONReaderUtils.DOUBLE_FORMAT_PATTERN).format(total));
+        lines.add(3, JSONReaderUtils.getSpacedString(
+                "Total amount of resource used this month:",
+                ((total < 1) ? "0" : "") + new DecimalFormat(JSONReaderUtils.DOUBLE_FORMAT_PATTERN).format(total)));
         double average = total / daysInMonth;
-        lines.add(4, "Average amount of resources used per day: " + ((average < 1) ? "0" : "") + new DecimalFormat(JSONReaderUtils.DOUBLE_FORMAT_PATTERN).format(average));
-        linesForGeneralFile.add("Average PR's open each day: " + ((average < 1) ? "0" : "") + new DecimalFormat(JSONReaderUtils.DOUBLE_FORMAT_PATTERN).format(average));
+        lines.add(4, JSONReaderUtils.getSpacedString(
+                "Average amount of resources used per day: ",
+                ((average < 1) ? "0" : "") + new DecimalFormat(JSONReaderUtils.DOUBLE_FORMAT_PATTERN).format(average)));
+        linesForGeneralFile.add(JSONReaderUtils.getSpacedString(
+                "Average PR's open each day: ",
+                ((average < 1) ? "0" : "") + new DecimalFormat(JSONReaderUtils.DOUBLE_FORMAT_PATTERN).format(average)));
     }
 
     private static double getResourceConsumptionForOneDay(List<Date> startDates, List<Date> endDates, int year, int month, int day) {

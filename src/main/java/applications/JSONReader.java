@@ -15,8 +15,6 @@ import java.util.*;
 
 /*
 TODO
-	• Tab tussen woorden bij het printen
-	• Totaal overview weghalen bij general info
 	• Verschil tussen PR naar master en PR's naar andere / totaal?
 	• Standaard deviation? SD min en max?
 	• Range?
@@ -50,7 +48,6 @@ public class JSONReader {
 
     private void run() {
         processEntireFile();
-        JSONReaderUtils.addGeneralStats(linesForGeneralFile, durations);
         for(Integer[] month : MONTHS_TO_BE_PRINTED) {
             List<String> lines = new ArrayList<>();
             linesForGeneralFile.add("\n" + month[0] + "-" + (month[1] < 10 ? "0" + month[1] : month[1]));

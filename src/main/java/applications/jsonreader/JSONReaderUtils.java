@@ -14,22 +14,29 @@ import java.util.Optional;
 public class JSONReaderUtils {
     public static final Integer SECONDS_IN_A_DAY = 86400;
     public static final String DOUBLE_FORMAT_PATTERN = "##.00";
+    public static final int COLUMN_WIDTH = 42;
 
     private JSONReaderUtils() {
         // empty constructor
     }
 
     public static void addGeneralStats(List<String> lines, List<Long> durations) {
-        lines.add("Total amount of PR's: " + durations.size());
+        lines.add(getSpacedString(
+                "Total amount of PR's:",
+                durations.size() + ""));
         printDuration(lines, durations);
-        lines.add("Maximum amount of time PR stayed open: " + JSONReaderUtils.fromEpochToDuration(JSONReaderUtils.getMaximum(durations)));
+        lines.add(getSpacedString(
+                "Maximum amount of time PR stayed open:",
+                JSONReaderUtils.fromEpochToDuration(JSONReaderUtils.getMaximum(durations))));
     }
 
     public static void printDuration(List<String> lines, List<Long> durations) {
         Optional<Long> result = durations.stream().reduce(Long::sum);
         if(result.isPresent()) {
             long averageInEpoch = Math.floorDiv(result.get(), durations.size());
-            lines.add("Average time PR stays open: " + Duration.ofSeconds(Math.floorDiv(averageInEpoch, 1000)).toString().substring(2));
+            lines.add(getSpacedString(
+                    "Average time PR stays open: ",
+                    fromEpochToDuration(averageInEpoch)));
         } else {
             lines.add("No results found");
         }
@@ -63,5 +70,16 @@ public class JSONReaderUtils {
         } catch (IOException e) {
             Logger.log(e);
         }
+    }
+
+    public static String getSpacedString(String... inputs) {
+        StringBuilder result = new StringBuilder();
+        for (String input : inputs) {
+            result.append(input);
+            for(int i =input.length();i<COLUMN_WIDTH;i++) {
+                result.append(" ");
+            }
+        }
+        return result.toString();
     }
 }
