@@ -13,7 +13,6 @@ import java.util.*;
 
 /*
 TODO
-    • Checken waarom bz niet werkt (=> Check logging)
 	• Verschil tussen PR naar master en PR's naar andere / totaal?
 	• Standaard deviation? SD min en max?
 	• Range?
@@ -36,10 +35,12 @@ public class JSONReader {
 
     private final JSONArray jsonArray;
     private final Path filePath;
+    private String fileName;
 
     public JSONReader (Path filePath) throws IOException {
         startDates = new ArrayList<>();endDates = new ArrayList<>();durations = new ArrayList<>();linesForGeneralFile = new ArrayList<>();
         this.filePath = filePath;
+        fileName = filePath.getFileName().toString().substring(0,filePath.getFileName().toString().length() - 5);
         InputStream is = Files.newInputStream(filePath);
         String jsonTxt = IOUtils.toString(is, StandardCharsets.UTF_8.toString());
         jsonArray = new JSONObject(jsonTxt).getJSONArray("values");
@@ -55,11 +56,11 @@ public class JSONReader {
             linesForMainFile.add(month[0] + "-" + (month[1] < 10 ? "0" + month[1] : month[1]));
             JSONReaderMonthly.addGeneralStatsForMonth(linesForMainFile, durations, endDates, lines, month[0], month[1]);
             JSONReaderMonthly.addResourceConsumptionForOneMonth(linesForMainFile, lines, startDates, endDates, month[0], month[1]);
-            JSONReaderUtils.createResultFile(lines, filePath.getParent() + "\\" + "platform-" + month[0] + "-" + month[1] +".txt");
+            JSONReaderUtils.createResultFile(lines, filePath.getParent() + "\\" + fileName + "-" + month[0] + "-" + month[1] +".txt");
             String[] resultArray = linesForMainFile.toArray(new String[0]);
             linesForGeneralFile.add(JSONReaderUtils.printRow(resultArray, JSONReaderUtils.COLUMN_WIDTH_MAIN_FILE));
         }
-        JSONReaderUtils.createResultFile(linesForGeneralFile, filePath.getParent() + "\\" + "platform.txt");
+        JSONReaderUtils.createResultFile(linesForGeneralFile, filePath.getParent() + "\\" + fileName + ".txt");
     }
 
     private void processEntireFile() {

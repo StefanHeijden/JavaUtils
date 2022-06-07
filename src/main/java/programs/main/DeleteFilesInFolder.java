@@ -23,7 +23,7 @@ public class DeleteFilesInFolder implements Program {
         return true;
     }
 
-    private static void deleteDirectory(Path path, boolean rootFolder) throws IOException {
+    public static void deleteDirectory(Path path, boolean rootFolder) throws IOException {
         if (Files.isDirectory(path, LinkOption.NOFOLLOW_LINKS)) {
             try (DirectoryStream<Path> entries = Files.newDirectoryStream(path)) {
                 for (Path entry : entries) {

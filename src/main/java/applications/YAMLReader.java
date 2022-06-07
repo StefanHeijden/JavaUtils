@@ -2,14 +2,14 @@ package applications;
 
 import configurators.Configuration;
 import configurators.Configurator;
+import programs.main.DeleteFilesInFolder;
 import utilities.Logger;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.*;
 
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -35,6 +35,29 @@ public class YAMLReader {
         readYAML();
         while(processLines()) {
             readYAML();
+        }
+        removeUnnecessaryFiles(targetPath);
+    }
+
+    private void removeUnnecessaryFiles(Path path) throws IOException {
+        if (Files.isDirectory(path, LinkOption.NOFOLLOW_LINKS)) {
+            if (path.getFileName().toString().endsWith("[1]") || path.getFileName().toString().endsWith("[2]")) {
+                DeleteFilesInFolder.deleteDirectory(path, false);
+            } else {
+                if(path.getFileName().toString().endsWith("[3]")) {
+                    String newFileName = path.toString().replace("[3]", "");
+                    if(!path.toFile().renameTo(new File(newFileName))){
+                        Logger.log("INFO: Successfully renamed file to: " + newFileName);
+                    }
+                }
+                try (DirectoryStream<Path> entries = Files.newDirectoryStream(path)) {
+                    for (Path entry : entries) {
+                        removeUnnecessaryFiles(entry);
+                    }
+                } catch(IOException e) {
+                    Logger.log(e);
+                }
+            }
         }
     }
 
@@ -93,13 +116,26 @@ public class YAMLReader {
         }
     }
     public void createYAML() {
+        boolean writeToFile = true;
         try(FileWriter writer = new FileWriter(Paths.get(writePath +  "\\" + getCurrentFileName(savedLines.get(0)) + ".yaml").toFile())) {
             Iterator<String> iterator = savedLines.iterator();
             writer.write(getInnerFileName(iterator.next()) + System.lineSeparator());
             while(iterator.hasNext()) {
                 String str = iterator.next();
-                str = str.length() < depth * SPACES_PER_TAB ? str : str.substring(depth * SPACES_PER_TAB);
-                writer.write(str + System.lineSeparator());
+                if(str.endsWith("[1]:")) {
+                    writeToFile = false;
+                }
+                if(str.endsWith("[3]:")){
+                    str = str.replace("[3]", "");
+                    writeToFile = true;
+                }
+                if(str.contains(" resource: ")) {
+                    str = str.replace("[3]", "");
+                }
+                if(writeToFile){
+                    str = str.length() < depth * SPACES_PER_TAB ? str : str.substring(depth * SPACES_PER_TAB);
+                    writer.write(str + System.lineSeparator());
+                }
             }
         } catch (IOException e) {
             Logger.log(e);
