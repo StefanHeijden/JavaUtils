@@ -18,6 +18,7 @@ public class YAMLReader {
     public static final Configuration configuration = new Configuration("configs\\yaml-reader.txt");
     public static final int SPACES_PER_TAB = configuration.getIntValue("SPACES_PER_TAB");
     public static final String ROOT_JCR_PATH  = configuration.getValue("ROOT_JCR_PATH");
+    public static final String RESOURCE_PROPERTY = "resource: ";
     private static final String[] FOLDER_TYPES = Configurator.getArrayConfigurationFromFile(
             "configs\\folder-types.txt");
     private static final String JCR_PATH_SEPARATOR = "/";
@@ -44,20 +45,24 @@ public class YAMLReader {
             if (path.getFileName().toString().endsWith("[1]") || path.getFileName().toString().endsWith("[2]")) {
                 DeleteFilesInFolder.deleteDirectory(path, false);
             } else {
-                if(path.getFileName().toString().endsWith("[3]")) {
-                    String newFileName = path.toString().replace("[3]", "");
-                    if(!path.toFile().renameTo(new File(newFileName))){
-                        Logger.log("INFO: Successfully renamed file to: " + newFileName);
-                    }
-                }
-                try (DirectoryStream<Path> entries = Files.newDirectoryStream(path)) {
-                    for (Path entry : entries) {
-                        removeUnnecessaryFiles(entry);
-                    }
-                } catch(IOException e) {
-                    Logger.log(e);
-                }
+                checkFiles(path);
             }
+        }
+    }
+
+    private void checkFiles(Path path) {
+        if(path.getFileName().toString().endsWith("[3]")) {
+            String newFileName = path.toString().replace("[3]", "");
+            if(!path.toFile().renameTo(new File(newFileName))){
+                Logger.log("INFO: Successfully renamed file to: " + newFileName);
+            }
+        }
+        try (DirectoryStream<Path> entries = Files.newDirectoryStream(path)) {
+            for (Path entry : entries) {
+                removeUnnecessaryFiles(entry);
+            }
+        } catch(IOException e) {
+            Logger.log(e);
         }
     }
 
@@ -129,8 +134,9 @@ public class YAMLReader {
                     str = str.replace("[3]", "");
                     writeToFile = true;
                 }
-                if(str.contains(" resource: ")) {
-                    str = str.replace("[3]", "");
+                if(str.contains(RESOURCE_PROPERTY)) {
+                    int resourceIndex = str.indexOf(RESOURCE_PROPERTY) + RESOURCE_PROPERTY.length();
+                    str = str.substring(0, resourceIndex) + ROOT_JCR_PATH + str.substring(resourceIndex).replace("[3]", "");
                 }
                 if(writeToFile){
                     str = str.length() < depth * SPACES_PER_TAB ? str : str.substring(depth * SPACES_PER_TAB);
