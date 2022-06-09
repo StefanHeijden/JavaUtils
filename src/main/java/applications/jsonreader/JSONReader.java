@@ -10,14 +10,12 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /*
 TODO
 	• Verschil tussen PR naar master en PR's naar andere / totaal?
-	• Standaard deviation? SD min en max?
 	• Range?
-	• PR die zijn geopened per dag?
-    • Gegevens in grafieken verwerken?
     • Refactoring?
  */
 public class JSONReader {
@@ -35,7 +33,8 @@ public class JSONReader {
 
     private final JSONArray jsonArray;
     private final Path filePath;
-    private String fileName;
+    private final String fileName;
+    protected static final List<String> GRAPHICAL_DATA = new ArrayList<>();
 
     public JSONReader (Path filePath) throws IOException {
         startDates = new ArrayList<>();endDates = new ArrayList<>();durations = new ArrayList<>();linesForGeneralFile = new ArrayList<>();
@@ -50,6 +49,7 @@ public class JSONReader {
     private void run() {
         processEntireFile();
         linesForGeneralFile.add(JSONReaderUtils.printRow(JSONReaderUtils.HEADERS_MAIN_FILE, JSONReaderUtils.COLUMN_WIDTH_MAIN_FILE));
+        GRAPHICAL_DATA.add("Datum" + "\t" + "Open pull requests");
         for(Integer[] month : MONTHS_TO_BE_PRINTED) {
             List<String> lines = new ArrayList<>();
             List<String> linesForMainFile = new ArrayList<>();
@@ -61,6 +61,8 @@ public class JSONReader {
             linesForGeneralFile.add(JSONReaderUtils.printRow(resultArray, JSONReaderUtils.COLUMN_WIDTH_MAIN_FILE));
         }
         JSONReaderUtils.createResultFile(linesForGeneralFile, filePath.getParent() + "\\" + fileName + ".txt");
+        JSONReaderUtils.createResultFile(GRAPHICAL_DATA.stream().sorted().collect(Collectors.toList()),
+                filePath.getParent() + "\\" + fileName + "-graphical-data.txt");
     }
 
     private void processEntireFile() {

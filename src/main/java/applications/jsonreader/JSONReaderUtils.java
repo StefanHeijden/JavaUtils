@@ -17,19 +17,19 @@ public class JSONReaderUtils {
     public static final int COLUMN_WIDTH = 44;
 
     protected static final String[] HEADERS_MAIN_FILE = {
-            "Date", "Average time PR stays open", "Average #PR's open each day"
+            "Date", "Average time PR stays open", "Average #PR's open each day", "Standard deviation"
     };
 
     protected static final int[] COLUMN_WIDTH_MAIN_FILE = {
-            10, 34, 30
+            10, 34, 30, 20
     };
 
     protected static final String[] HEADERS_MONTH_FILE = {
-            "Day", "Open PR's", "PR's opened"
+            "Day", "Open PR's", "PR's opened", "PR's closed"
     };
 
     protected static final int[] COLUMN_WIDTH_MONTH_FILE = {
-            10, 12, 10
+            10, 12, 13, 13
     };
 
     private JSONReaderUtils() {
@@ -42,13 +42,13 @@ public class JSONReaderUtils {
                 durations.size() + ""));
         lines.add(getSpacedString(
                 "Average time PR stays open: ",
-                printDuration(durations)));
+                getAverageDuration(durations)));
         lines.add(getSpacedString(
                 "Maximum amount of time PR stayed open:",
                 JSONReaderUtils.fromEpochToDuration(JSONReaderUtils.getMaximum(durations))));
     }
 
-    public static String printDuration(List<Long> durations) {
+    public static String getAverageDuration(List<Long> durations) {
         Optional<Long> result = durations.stream().reduce(Long::sum);
         if(result.isPresent()) {
             long averageInEpoch = Math.floorDiv(result.get(), durations.size());
@@ -108,5 +108,13 @@ public class JSONReaderUtils {
             }
         }
         return result + "\n";
+    }
+
+    public static double calculateStandardDeviation(List<Double> totals, double mean) {
+        double standardDeviation = 0.0;
+        for(Double num : totals) {
+            standardDeviation += Math.pow(num - mean, 2);
+        }
+        return Math.sqrt(standardDeviation/totals.size());
     }
 }
