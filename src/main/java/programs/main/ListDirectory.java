@@ -12,7 +12,7 @@ public class ListDirectory implements Program {
     @Override
     public boolean work(Map<String, Object> input) {
         File[] files = UserInputReader.getCurrentPath().toFile().listFiles();
-        StringBuilder fileString = new StringBuilder("");
+        StringBuilder fileString = new StringBuilder();
         if(files != null){
             for (File file : files) {
                 fileString.append(file.getName());
