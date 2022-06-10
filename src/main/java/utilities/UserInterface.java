@@ -2,7 +2,6 @@ package utilities;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.text.BadLocationException;
 
 import static java.lang.Thread.sleep;
 
@@ -21,9 +20,21 @@ public class UserInterface{
         JPanel p = new JPanel();
 
         p.setLayout(new BorderLayout());
-        p.add(display, BorderLayout.CENTER);
+
+        JPanel displayPanel = new JPanel();
+        displayPanel.setLayout(new BorderLayout());
+        displayPanel.add(display, BorderLayout.SOUTH);
+        JScrollPane displayScrollPane = new JScrollPane(displayPanel);
+
+        JPanel historyPanel = new JPanel();
+        historyPanel.setLayout(new BorderLayout());
+        historyPanel.add(history, BorderLayout.SOUTH);
+        JScrollPane historyScrollPane = new JScrollPane(historyPanel);
+
+        historyScrollPane.setMinimumSize(new Dimension(500, 250));
+        p.add(displayScrollPane, BorderLayout.CENTER);
         p.add(console, BorderLayout.SOUTH);
-        p.add(history, BorderLayout.EAST);
+        p.add(historyScrollPane, BorderLayout.EAST);
         f.add(p);
         f.setSize(900, 600);
         f.setVisible(true);
@@ -39,7 +50,7 @@ public class UserInterface{
                 sleep(30);
             }
             String userInput = console.getTextAndStopReadingInput();
-            printLine(history, userInput);
+            history.appendToPane(userInput, Color.BLACK);
             return userInput;
         } catch (InterruptedException e) {
             Logger.log(e);
@@ -48,18 +59,7 @@ public class UserInterface{
     }
 
     public static void printLine(Object message) {
-        printLine(display, message);
-    }
-
-    public static void printLine(JTextArea textArea, Object message) {
-        textArea.append(message.toString() + "\n");
-        int end = 0;
-        try {
-            end = textArea.getLineEndOffset(0);
-        } catch (BadLocationException e) {
-            Logger.log(e);
-        }
-        textArea.replaceRange("", 0, end);
+        display.appendToPane(message, Color.BLACK);
     }
 
     public static void startReadingInput(){
