@@ -110,6 +110,17 @@ public class JSONReaderUtils {
         return result + "\n";
     }
 
+    public static String printRow(String[] columns) {
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < columns.length;i++) {
+            result.append(columns[i]);
+            if(i < columns.length - 1) {
+                result.append("\t");
+            }
+        }
+        return result.toString();
+    }
+
     public static double calculateStandardDeviation(List<Double> totals, double mean) {
         double standardDeviation = 0.0;
         for(Double num : totals) {

@@ -29,15 +29,19 @@ public class YAMLReader {
     private int counter = 0;
     private int depth = 0;
     private boolean duplicate = false;
+    private boolean containsImages = false;
 
-    public YAMLReader(Path filePath, Path targetPath) throws IllegalAccessException, IOException {
+    public YAMLReader(Path filePath, Path targetPath, boolean containsImages) throws IllegalAccessException, IOException {
         startPath = targetPath; writePath = targetPath; savedLines = new ArrayList<>();
         lines = Files.readAllLines(filePath);
+        this.containsImages = containsImages;
         readYAML();
         while(processLines()) {
             readYAML();
         }
-        removeUnnecessaryFiles(targetPath);
+        if(containsImages) {
+            removeUnnecessaryFiles(targetPath);
+        }
     }
 
     private void removeUnnecessaryFiles(Path path) throws IOException {
@@ -127,16 +131,18 @@ public class YAMLReader {
             writer.write(getInnerFileName(iterator.next()) + System.lineSeparator());
             while(iterator.hasNext()) {
                 String str = iterator.next();
-                if(str.endsWith("[1]:")) {
-                    writeToFile = false;
-                }
-                if(str.endsWith("[3]:")){
-                    str = str.replace("[3]", "");
-                    writeToFile = true;
-                }
-                if(str.contains(RESOURCE_PROPERTY)) {
-                    int resourceIndex = str.indexOf(RESOURCE_PROPERTY) + RESOURCE_PROPERTY.length();
-                    str = str.substring(0, resourceIndex) + ROOT_JCR_PATH + str.substring(resourceIndex).replace("[3]", "");
+                if(containsImages){
+                    if(str.endsWith("[1]:")) {
+                        writeToFile = false;
+                    }
+                    if(str.endsWith("[3]:")){
+                        str = str.replace("[3]", "");
+                        writeToFile = true;
+                    }
+                    if(str.contains(RESOURCE_PROPERTY)) {
+                        int resourceIndex = str.indexOf(RESOURCE_PROPERTY) + RESOURCE_PROPERTY.length();
+                        str = str.substring(0, resourceIndex) + ROOT_JCR_PATH + str.substring(resourceIndex).replace("[3]", "");
+                    }
                 }
                 if(writeToFile){
                     str = str.length() < depth * SPACES_PER_TAB ? str : str.substring(depth * SPACES_PER_TAB);

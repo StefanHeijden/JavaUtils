@@ -33,7 +33,7 @@ public class ReadYaml implements Program {
             fileName = fileName.endsWith(".yaml") ? fileName : fileName + ".yaml";
             Path filePath = new File(UserInputReader.getCurrentPath() + Configurator.STRING_LINE_SEPARATOR + fileName).toPath();
             Path targetPath = new File(UserInputReader.getCurrentPath().resolve(Paths.get(targetLocation)).normalize().toString()).toPath();
-            new YAMLReader(filePath, targetPath);
+            new YAMLReader(filePath, targetPath, false);
         } catch (NoSuchFileException e) {
             Logger.log(e);
             UserInterface.printLine(e.toString());

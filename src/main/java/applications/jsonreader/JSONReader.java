@@ -48,7 +48,7 @@ public class JSONReader {
 
     private void run() {
         processEntireFile();
-        linesForGeneralFile.add(JSONReaderUtils.printRow(JSONReaderUtils.HEADERS_MAIN_FILE, JSONReaderUtils.COLUMN_WIDTH_MAIN_FILE));
+        linesForGeneralFile.add(JSONReaderUtils.printRow(JSONReaderUtils.HEADERS_MAIN_FILE));
         GRAPHICAL_DATA.add("Datum" + "\t" + "Open pull requests");
         for(Integer[] month : MONTHS_TO_BE_PRINTED) {
             List<String> lines = new ArrayList<>();
@@ -58,11 +58,12 @@ public class JSONReader {
             JSONReaderMonthly.addResourceConsumptionForOneMonth(linesForMainFile, lines, startDates, endDates, month[0], month[1]);
             JSONReaderUtils.createResultFile(lines, filePath.getParent() + "\\" + fileName + "-" + month[0] + "-" + month[1] +".txt");
             String[] resultArray = linesForMainFile.toArray(new String[0]);
-            linesForGeneralFile.add(JSONReaderUtils.printRow(resultArray, JSONReaderUtils.COLUMN_WIDTH_MAIN_FILE));
+            linesForGeneralFile.add(JSONReaderUtils.printRow(resultArray));
         }
         JSONReaderUtils.createResultFile(linesForGeneralFile, filePath.getParent() + "\\" + fileName + ".txt");
         JSONReaderUtils.createResultFile(GRAPHICAL_DATA.stream().sorted().collect(Collectors.toList()),
                 filePath.getParent() + "\\" + fileName + "-graphical-data.txt");
+        JSONReader.GRAPHICAL_DATA.clear();
     }
 
     private void processEntireFile() {
