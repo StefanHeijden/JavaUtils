@@ -21,6 +21,7 @@ public class StartClass {
         PROGRAMS.put("cd", new ChangeCurrentPath());
         PROGRAMS.put("ls", new ListDirectory());
         PROGRAMS.put("json", new ReadJson());
+        PROGRAMS.put("awa", new AnalyzeWatsApp());
         CONFIGS.put("PROGRAMS", PROGRAMS);
     }
 
