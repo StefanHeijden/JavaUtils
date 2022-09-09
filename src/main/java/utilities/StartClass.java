@@ -22,6 +22,7 @@ public class StartClass {
         PROGRAMS.put("ls", new ListDirectory());
         PROGRAMS.put("json", new ReadJson());
         PROGRAMS.put("awa", new AnalyzeWatsApp());
+        PROGRAMS.put("ajp", new AnalyzeJavaProject());
         CONFIGS.put("PROGRAMS", PROGRAMS);
     }
 
