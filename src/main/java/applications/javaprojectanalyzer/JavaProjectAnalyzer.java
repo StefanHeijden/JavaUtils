@@ -8,26 +8,30 @@ import java.io.IOException;
 import java.nio.file.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
 public class JavaProjectAnalyzer {
-    public static final Path sourcePath = Paths.get("C:/Users/stheijde/Repositories/Java/JavaUtils/files/src");
+    public static final Path sourcePath = Paths.get("C:/Users/stheijde/Repositories/AZPlatform/platform");
     public static final Path writePath = Paths.get("C:/Users/stheijde/Repositories/Java/JavaUtils/results");
-    public static final String rootClassName = "DocumentUrlProvider";
+    public static final String rootClassName = "Document";
+    public static final String[] methodsToExclude = {
+            "getRelatedDecorativeImage"
+    };
+    public static final String methodsToLookForThatStartWith = "getRelated";
     Map<String, JavaClassFile> javaClassFiles;
 
     public JavaProjectAnalyzer() {
         List<Path> javaFilePaths = findAllJavaFiles(sourcePath, new ArrayList<>());
         javaClassFiles = getJavaClassFiles(javaFilePaths);
         UserInterface.printLine("Found " + javaClassFiles.size() + " java files.");
-        List<String> methodsToLookFor = new ArrayList<>();
-        methodsToLookFor.add(" getRelatedTopics()");
+        Logger.logInfo("Found " + javaClassFiles.size() + " java files.");
         if(javaClassFiles.containsKey(rootClassName)) {
-            JavaClassFileUtils.addMethodsFromFileAndParent(javaClassFiles.get(rootClassName), null, methodsToLookFor);
-            initializeJavaClassFiles(javaClassFiles.get(rootClassName), methodsToLookFor);
+            JavaClassFileUtils.addMethodsFromParent(javaClassFiles.get(rootClassName), null);
+            initializeJavaClassFiles(javaClassFiles.get(rootClassName));
             UserInterface.printLine("Print results in: " + writePath.toString());
             printResults();
         } else {
@@ -63,17 +67,18 @@ public class JavaProjectAnalyzer {
         return javaClassFiles;
     }
 
-    private void initializeJavaClassFiles(JavaClassFile parent, List<String> methodsToLookFor) {
+    private void initializeJavaClassFiles(JavaClassFile parent) {
         List<JavaClassFile> children = JavaClassFileUtils.findChildren(parent, javaClassFiles);
         for (JavaClassFile child : children) {
-            JavaClassFileUtils.addMethodsFromFileAndParent(child, parent, methodsToLookFor);
-            initializeJavaClassFiles(child, methodsToLookFor);
+            JavaClassFileUtils.addMethodsFromParent(child, parent);
+            initializeJavaClassFiles(child);
         }
     }
 
     private void printResults() {
         for (JavaClassFile javaClassFile: javaClassFiles.values()) {
             if(javaClassFile.isInitialized()) {
+                javaClassFile.setMethodsToLookForThatStartWith(methodsToLookForThatStartWith, methodsToExclude);
                 javaClassFile.printJavaClassResults(writePath);
             }
         }

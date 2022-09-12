@@ -20,16 +20,20 @@ public class Logger {
     private Logger(){}
 
     public static void log(String text) {
-        try(FileWriter writer = new FileWriter(LOG_FILE)) {
+        try(FileWriter writer = new FileWriter(LOG_FILE, true)) {
             writer.write(ZonedDateTime.now() + " ");
             writer.write(text + System.lineSeparator());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    public static void logInfo(String text) {
+        log("[INFO] " + text);
+    }
     
     public static void log(Throwable throwable) {
-        try(FileWriter writer = new FileWriter(LOG_FILE)) {
+        try(FileWriter writer = new FileWriter(LOG_FILE, true)) {
             writer.write(ZonedDateTime.now() + " ");
             writer.write(throwable + System.lineSeparator());
             for (StackTraceElement element : Arrays.stream(throwable.getStackTrace()).collect(Collectors.toList())) {
