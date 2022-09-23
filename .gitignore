@@ -1,7 +1,7 @@
 /target
 /.idea
 /files
-/logs
+/logs/
 /results
 /src/test/results
 dependency-reduced-pom.xml
