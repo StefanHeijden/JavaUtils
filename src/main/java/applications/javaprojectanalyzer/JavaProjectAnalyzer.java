@@ -15,9 +15,13 @@ import java.util.Iterator;
 import java.util.List;
 
 public class JavaProjectAnalyzer {
-    public static final Path sourcePath = Paths.get("C:/Users/stheijde/Repositories/AZPlatform/platform");
+    public static final Path sourcePath = Paths.get("C:/Users/stheijde/Repositories/Java/JavaUtils/src/test/data/javaclasses");
     public static final Path writePath = Paths.get("C:/Users/stheijde/Repositories/Java/JavaUtils/results");
-    public static final String rootClassName = "Document";
+    public static final String[] rootClassNames = {
+            "MyClass.java",
+            "StreamExample",
+            "Java8ForEachExample"
+    };
     public static final String[] methodsToExclude = {
             "getRelatedDecorativeImage"
     };
@@ -29,13 +33,15 @@ public class JavaProjectAnalyzer {
         javaClassFiles = getJavaClassFiles(javaFilePaths);
         UserInterface.printLine("Found " + javaClassFiles.size() + " java files.");
         Logger.logInfo("Found " + javaClassFiles.size() + " java files.");
-        if(javaClassFiles.containsKey(rootClassName)) {
-            JavaClassFileUtils.addMethodsFromParent(javaClassFiles.get(rootClassName), null);
-            initializeJavaClassFiles(javaClassFiles.get(rootClassName));
-            UserInterface.printLine("Print results in: " + writePath.toString());
-            printResults();
-        } else {
-            UserInterface.printLine("Rootclass not found: " + rootClassName);
+        for(String rootClassName : rootClassNames) {
+            if(javaClassFiles.containsKey(rootClassName)) {
+                JavaClassFileUtils.addMethodsFromParent(javaClassFiles.get(rootClassName), null);
+                initializeJavaClassFiles(javaClassFiles.get(rootClassName));
+                UserInterface.printLine("Print results in: " + writePath.toString());
+                printResults();
+            } else {
+                UserInterface.printLine("Rootclass not found: " + rootClassName);
+            }
         }
     }
 
@@ -77,10 +83,8 @@ public class JavaProjectAnalyzer {
 
     private void printResults() {
         for (JavaClassFile javaClassFile: javaClassFiles.values()) {
-            if(javaClassFile.isInitialized()) {
-                javaClassFile.setMethodsToLookForThatStartWith(methodsToLookForThatStartWith, methodsToExclude);
-                javaClassFile.printJavaClassResults(writePath);
-            }
+            javaClassFile.setMethodsToLookForThatStartWith(methodsToLookForThatStartWith, methodsToExclude);
+            javaClassFile.printJavaClassResults(writePath);
         }
     }
 }

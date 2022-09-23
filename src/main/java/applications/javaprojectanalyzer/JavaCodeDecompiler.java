@@ -1,15 +1,18 @@
 package applications.javaprojectanalyzer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import utilities.Logger;
 
 public class JavaCodeDecompiler {
 
-    public static final String LINE_ENDER = ";";
-    public static final String LINE_ENDER2 = "{";
-    public static final String LINE_ENDER3 = "}";
-
     public static List<String> decompile(List<String> codeForJavaFile) {
+        codeForJavaFile = JavaDecompilerPreProcessor.splitLinesWithLineEnder(codeForJavaFile);
+        for(String line: codeForJavaFile) {
+            Logger.logInfo("Line of code: " + line);
+        }
         List<String> codeLines = new ArrayList<>();
         int currentIndex = 0;
 
@@ -23,15 +26,35 @@ public class JavaCodeDecompiler {
 
     private static int findEndOfNextLinePiece(List<String> codeForJavaFile, StringBuffer currentString, int currentIndex) {
         int index = currentIndex;
+        boolean isCommentedOut = false;
         while(index < codeForJavaFile.size()) {
-            String currentLine = codeForJavaFile.get(index);
-            currentString.append(currentLine);
+            String currentLine = codeForJavaFile.get(index).trim();
+            addLineSegmentToStringBuffer(currentLine, currentString);
             index++;
-            if(currentLine.contains(LINE_ENDER) || currentLine.contains(LINE_ENDER2) || currentLine.contains(LINE_ENDER3)) {
+            if(JavaLineEndFinder.getIndexOfALineEnderInLine(currentLine) > 0) {
                 return index;
+            }
+            if(currentLine.startsWith("//")) {
+                return index;
+            }
+            if(currentLine.startsWith("/*")) {
+                isCommentedOut = true;
+            }
+
+            if(currentLine.startsWith("*/")) {
+                isCommentedOut = true;
             }
         }
         return -1;
     }
+
+    private static void addLineSegmentToStringBuffer(String line, StringBuffer stringBuffer) {
+        if(stringBuffer.length() <= 0) {
+            stringBuffer.append(line);
+        } else {
+            stringBuffer.append(" " + line);
+        }
+    }
+
 
 }
