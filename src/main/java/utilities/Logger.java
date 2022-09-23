@@ -9,10 +9,14 @@ import java.io.PrintWriter;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.stream.Collectors;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 public class Logger {
-    public static final String LOG_FILE_LOCATION = Configurator.APPLICATION_PATH + "/logs/test.txt";
+    public static final String LOG_FILE_LOCATION;
     static {
+        String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+        LOG_FILE_LOCATION = Configurator.APPLICATION_PATH + "/logs/" + timeStamp + ".txt";
         createNewFile(LOG_FILE_LOCATION);
     }
     public static final File LOG_FILE = new File(LOG_FILE_LOCATION);
