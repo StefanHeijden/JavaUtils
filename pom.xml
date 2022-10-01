@@ -5,27 +5,27 @@
     <groupId>org.springframework</groupId>
     <artifactId>java-utils</artifactId>
     <packaging>jar</packaging>
-    <version>0.2.0</version>
+    <version>0.1.0</version>
     <dependencies>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.8.2</version>
+            <version>5.9.0</version>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>4.5.1</version>
+            <version>4.8.0</version>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
-            <version>4.5.1</version>
+            <version>4.8.0</version>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-inline</artifactId>
-            <version>4.5.1</version>
+            <version>4.8.0</version>
         </dependency>
         <dependency>
             <groupId>org.json</groupId>
