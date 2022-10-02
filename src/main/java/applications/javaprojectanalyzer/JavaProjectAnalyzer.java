@@ -66,7 +66,7 @@ public class JavaProjectAnalyzer {
         Map<String, JavaClassFile> javaClassFiles = new HashMap<>();
         for (Path javaFilePath : javaFilePaths) {
             for (List<String> javaClassSource : JavaClassFileUtils.splitFilePerClass(javaFilePath)) {
-                JavaClassFile javaClassFile = new JavaClassFile(javaClassSource);
+                JavaClassFile javaClassFile = JavaClassFileExtractor.extractJavaClassFile(javaClassSource);
                 javaClassFiles.put(javaClassFile.getClassName(), javaClassFile);
             }
         }
