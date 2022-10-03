@@ -1,16 +1,7 @@
 package applications.javaprojectanalyzer;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
-
-import utilities.UserInterface;
-import utilities.Logger;
 
 public class JavaClassFile {
     private String className;
@@ -28,6 +19,14 @@ public class JavaClassFile {
         this.className =  className;
         this.parentClassName = parentClassName;
         children = new ArrayList<>();
+    }
+
+    public List<String> getCode() {
+        return new ArrayList<>();
+    }
+
+    public String getParentClassName() {
+        return parentClassName;
     }
 
     public String getClassName() {

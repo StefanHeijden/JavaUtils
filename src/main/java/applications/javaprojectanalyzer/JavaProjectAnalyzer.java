@@ -1,18 +1,14 @@
 package applications.javaprojectanalyzer;
 
-import utilities.UserInterface;
 import utilities.Logger;
+import utilities.UserInterface;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.*;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Map;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class JavaProjectAnalyzer {
     public static final Path sourcePath = Paths.get("C:/Users/stheijde/Repositories/Java/JavaUtils/src/test/data/javaclasses");
@@ -37,7 +33,8 @@ public class JavaProjectAnalyzer {
             if(javaClassFiles.containsKey(rootClassName)) {
                 JavaClassFileUtils.addMethodsFromParent(javaClassFiles.get(rootClassName), null);
                 initializeJavaClassFiles(javaClassFiles.get(rootClassName));
-                UserInterface.printLine("Print results in: " + writePath.toString());
+                UserInterface.printLine("Print results in: " + writePath);
+                JavaClassMethodsUtils.setMethodsToLookFor(javaClassFiles, methodsToExclude, methodsToLookForThatStartWith);
                 printResults();
             } else {
                 UserInterface.printLine("Rootclass not found: " + rootClassName);
@@ -52,7 +49,7 @@ public class JavaProjectAnalyzer {
                     findAllJavaFiles(entry, javaFilePaths);
                 }
             } catch (IOException e) {
-                UserInterface.printLine("Error reading folder: " + sourcePath.toString());
+                UserInterface.printLine("Error reading folder: " + sourcePath);
             }
         } else {
             if (sourcePath.toString().endsWith(".java")) {
@@ -65,7 +62,7 @@ public class JavaProjectAnalyzer {
     private Map<String, JavaClassFile> getJavaClassFiles(List<Path> javaFilePaths) {
         Map<String, JavaClassFile> javaClassFiles = new HashMap<>();
         for (Path javaFilePath : javaFilePaths) {
-            for (List<String> javaClassSource : JavaClassFileUtils.splitFilePerClass(javaFilePath)) {
+            for (List<String> javaClassSource : JavaClassFileFileSplitter.splitFilePerClass(javaFilePath)) {
                 JavaClassFile javaClassFile = JavaClassFileExtractor.extractJavaClassFile(javaClassSource);
                 javaClassFiles.put(javaClassFile.getClassName(), javaClassFile);
             }
@@ -83,8 +80,7 @@ public class JavaProjectAnalyzer {
 
     private void printResults() {
         for (JavaClassFile javaClassFile: javaClassFiles.values()) {
-            javaClassFile.setMethodsToLookForThatStartWith(methodsToLookForThatStartWith, methodsToExclude);
-            javaClassFile.printJavaClassResults(writePath);
+            JavaClassPrinter.printJavaClassResults(writePath, javaClassFile);
         }
     }
 }

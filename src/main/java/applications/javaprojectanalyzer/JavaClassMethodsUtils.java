@@ -1,7 +1,7 @@
 package applications.javaprojectanalyzer;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class JavaClassMethodsUtils {
 
@@ -22,6 +22,18 @@ public class JavaClassMethodsUtils {
             }
         }
         return methods;
+    }
+
+    public static Map<String, JavaClassFile> setMethodsToLookFor(Map<String, JavaClassFile> javaClassFiles,
+                                                                 String[] methodsToExclude, String methodsToLookForThatStartWith) {
+        for (JavaClassFile javaClassFile: javaClassFiles.values()) {
+            if(javaClassFile instanceof JavaClassFileWithMethodsToLookFor) {
+                JavaClassFileWithMethodsToLookFor javaClassFileWithMethodsToLookFor = (JavaClassFileWithMethodsToLookFor) javaClassFile;
+                JavaClassMethodFinder.setMethodsToLookForThatStartWith(methodsToLookForThatStartWith, methodsToExclude,
+                        javaClassFileWithMethodsToLookFor);
+            }
+        }
+        return javaClassFiles;
     }
 
 }
